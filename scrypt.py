@@ -123,7 +123,7 @@ def encrypt(input, password,
     password = _ensure_bytes(password)
 
     outbuf = create_string_buffer(len(input) + 128)
-	# verbose is set to zero
+    # verbose is set to zero
     result = _scryptenc_buf(input, len(input),
                             outbuf,
                             password, len(password),
