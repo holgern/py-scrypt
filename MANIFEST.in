@@ -1,0 +1,10 @@
+recursive-include scrypt-1.2.0 *.h
+include README.rst
+include src/*.c
+
+include tests/__init__.py
+include tests/ciphertexts.csv
+include tests/hashvectors.csv
+include tests/test_scrypt.py
+include tests/test_scrypt_py2x.py
+include tests/test_scrypt_py3x.py
