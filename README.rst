@@ -1,4 +1,3 @@
-=========================
  Python scrypt_ bindings
 =========================
 
@@ -17,7 +16,7 @@ MD5 or the SHA family which can be implemented extremely fast on cheap
 hardware.
 
 Installation
-============
+------------
 
 You can install py-scrypt from this repository if you want the latest
 but possibly non-compiling version::
@@ -44,7 +43,7 @@ From version 0.6.0 (not available on PyPi yet), py-scrypt supports
 PyPy as well.
 
 Usage
-=====
+-----
 
 Fore encryption/decryption, the library exports two functions
 ``encrypt`` and ``decrypt``::
@@ -93,7 +92,7 @@ you can use the ``hash`` function::
 
 
 Acknowledgements
-================
+----------------
 `scrypt-python`_ was created by Magnus Hallin and is licensed as 2-clause BSD.
 I cloned scrypt for python, as I need a version for anaconda using Python 3.6.
 The scrypt sources are also not updated since one year.
@@ -116,9 +115,11 @@ The `python-appveyor-demo`_ repository for setting up automated Windows
 builds for a multitude of Python versions.
 
 License
-=======
+-------
 
 This library is licensed under the same license as scrypt; 2-clause BSD.
+
+
 .. _scrypt-python: https://bitbucket.org/mhallin/py-scrypt/
 .. _scrypt: http://www.tarsnap.com/scrypt.html
 .. _Python: http://python.org
