@@ -50,8 +50,8 @@ before_install:
   - pip install --upgrade wheel
   # Set numpy version first, other packages link against it
   #- pip install Cython matplotlib nose coverage codecov futures
-  #- set -o pipefail
-  #- |
+  - set -o pipefail
+  - |
 
 script:
   # Define a fixed build dir so next step works

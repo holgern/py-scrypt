@@ -3,6 +3,7 @@ brew update
 brew install ccache openssl
 cd /usr/local/include
 ln -s ../opt/openssl/include/openssl
+cd ~
 
 git clone https://github.com/MacPython/terryfy.git ~/terryfy
 source ~/terryfy/travis_tools.sh
