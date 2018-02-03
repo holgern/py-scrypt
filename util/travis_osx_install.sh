@@ -1,6 +1,5 @@
 #!/bin/bash
 brew update
-brew upgrade
 brew install ccache openssl
 cd /usr/local/include
 ln -s ../opt/openssl/include/openssl
