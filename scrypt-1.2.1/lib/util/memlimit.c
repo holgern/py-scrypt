@@ -33,7 +33,14 @@
 #include "scrypt_platform.h"
 
 #include <sys/types.h>
+
+#ifndef _WIN32
 #include <sys/resource.h>
+#else
+#define _WIN32_WINNT 0x0502
+#include <Windows.h>
+#include <tchar.h>
+#endif
 
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
@@ -148,6 +155,7 @@ memlimit_sysinfo(size_t * memlimit)
 }
 #endif /* HAVE_SYSINFO */
 
+#ifndef _WIN32
 static int
 memlimit_rlimit(size_t * memlimit)
 {
@@ -195,6 +203,7 @@ memlimit_rlimit(size_t * memlimit)
 	/* Success! */
 	return (0);
 }
+#endif
 
 #ifdef _SC_PHYS_PAGES
 
@@ -245,12 +254,29 @@ memlimit_sysconf(size_t * memlimit)
 }
 #endif
 
+#ifdef _WIN32
+static int
+memlimit_windows(size_t * memlimit)
+{
+	MEMORYSTATUSEX state;
+	state.dwLength = sizeof(state);
+
+	if(!GlobalMemoryStatusEx (&state))
+		return (1);
+
+
+	*memlimit = state.ullTotalPhys;
+	return (0);
+
+}
+#endif
+
 int
 memtouse(size_t maxmem, double maxmemfrac, size_t * memlimit)
 {
 	size_t usermem_memlimit, memsize_memlimit;
 	size_t sysinfo_memlimit, rlimit_memlimit;
-	size_t sysconf_memlimit;
+	size_t sysconf_memlimit, windows_memlimit;
 	size_t memlimit_min;
 	size_t memavail;
 
@@ -273,13 +299,23 @@ memtouse(size_t maxmem, double maxmemfrac, size_t * memlimit)
 #else
 	sysinfo_memlimit = SIZE_MAX;
 #endif
+#ifndef _WIN32
 	if (memlimit_rlimit(&rlimit_memlimit))
 		return (1);
+#else
+	rlimit_memlimit = SIZE_MAX;
+#endif
 #ifdef _SC_PHYS_PAGES
 	if (memlimit_sysconf(&sysconf_memlimit))
 		return (1);
 #else
 	sysconf_memlimit = SIZE_MAX;
+#endif
+#ifdef _WIN32
+	if (memlimit_windows(&windows_memlimit))
+		return (1);
+#else
+	windows_memlimit = SIZE_MAX;
 #endif
 
 #ifdef DEBUG
@@ -301,6 +337,8 @@ memtouse(size_t maxmem, double maxmemfrac, size_t * memlimit)
 		memlimit_min = rlimit_memlimit;
 	if (memlimit_min > sysconf_memlimit)
 		memlimit_min = sysconf_memlimit;
+	if (memlimit_min > windows_memlimit)
+		memlimit_min = windows_memlimit;
 
 	/* Only use the specified fraction of the available memory. */
 	if ((maxmemfrac > 0.5) || (maxmemfrac == 0.0))
