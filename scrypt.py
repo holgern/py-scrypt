@@ -34,6 +34,7 @@ _scryptdec_buf.argtypes = [c_char_p,           # const uint8_t *inbuf
                            c_double,           # double         maxmemfrac
                            c_double,           # double         maxtime
                            c_int,              # int            verbose
+                           c_int,              # int            force
                            ]
 _scryptdec_buf.restype = c_int
 
@@ -122,6 +123,7 @@ def encrypt(input, password,
     password = _ensure_bytes(password)
 
     outbuf = create_string_buffer(len(input) + 128)
+	# verbose is set to zero
     result = _scryptenc_buf(input, len(input),
                             outbuf,
                             password, len(password),
@@ -165,11 +167,11 @@ def decrypt(input, password,
 
     input = _ensure_bytes(input)
     password = _ensure_bytes(password)
-
+    # verbose and force are set to zero
     result = _scryptdec_buf(input, len(input),
                             outbuf, outbuflen,
                             password, len(password),
-                            maxmem, maxmemfrac, maxtime, 0)
+                            maxmem, maxmemfrac, maxtime, 0, 0)
 
     if result:
         raise error(result)

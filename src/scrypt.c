@@ -52,9 +52,9 @@ DL_EXPORT(int) exp_scryptenc_buf(const uint8_t *inbuf, size_t inbuflen,
 DL_EXPORT(int) exp_scryptdec_buf(const uint8_t *inbuf, size_t inbuflen,
                                  uint8_t *outbuf, size_t *outbuflen,
                                  const uint8_t *passwd, size_t passwdlen,
-                                 size_t maxmem, double maxmemfrac, double maxtime, int verbose) {
+                                 size_t maxmem, double maxmemfrac, double maxtime, int verbose, int force) {
     return scryptdec_buf(inbuf, inbuflen, outbuf, outbuflen, passwd, passwdlen,
-                         maxmem, maxmemfrac, maxtime, verbose);
+                         maxmem, maxmemfrac, maxtime, verbose, force);
 }
 
 DL_EXPORT(int) exp_crypto_scrypt(const uint8_t *passwd, size_t passwdlen,
