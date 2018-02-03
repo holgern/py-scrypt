@@ -26,7 +26,7 @@ if sys.platform.startswith('linux'):
 elif sys.platform.startswith('win32'):
     define_macros = [('inline', '__inline')]
     libraries = ['libeay32', 'advapi32']
-    extra_sources = ['scrypt-windows-stubs/gettimeofday.c']
+    extra_sources = ['scrypt-windows-stubs/gettimeofday.c', 'scrypt-windows-stubs/mman.c']
 
     if struct.calcsize('P') == 8:
         library_dirs = ['c:\OpenSSL-Win64\lib']
