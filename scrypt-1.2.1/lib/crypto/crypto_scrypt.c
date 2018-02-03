@@ -29,6 +29,7 @@
 #include "scrypt_platform.h"
 
 #include <sys/types.h>
+
 #ifndef _WIN32
 #include <sys/mman.h>
 #endif
@@ -171,12 +172,12 @@ static struct scrypt_test {
 	uint32_t p;
 	uint8_t result[TESTLEN];
 } testcase = {
-	.passwd = "pleaseletmein",
-	.salt = "SodiumChloride",
-	.N = 16,
-	.r = 8,
-	.p = 1,
-	.result = {
+	"pleaseletmein",
+	"SodiumChloride",
+	16,
+	8,
+	1,
+	{
 		0x25, 0xa9, 0xfa, 0x20, 0x7f, 0x87, 0xca, 0x09,
 		0xa4, 0xef, 0x8b, 0x9f, 0x77, 0x7a, 0xca, 0x16,
 		0xbe, 0xb7, 0x84, 0xae, 0x18, 0x30, 0xbf, 0xbf,
