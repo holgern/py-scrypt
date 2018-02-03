@@ -92,3 +92,15 @@ after_test:
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
   - path: dist\*
+
+deploy:
+  description: 'wheel from appveyor'
+  provider: GitHub
+  auth_token:
+    secure:  cWOjktNgOeRYJwkvayAASUlkYKo5uQt7ZrvP0CQ/a+0QEOB3ArlciA8JzP3+Tr/S  # your encrypted token from GitHub
+  draft: false
+  prerelease: false
+  force_update: true
+  on:
+    branch: master                 # release from master branch only
+    appveyor_repo_tag: false        # deploy on tag push only
