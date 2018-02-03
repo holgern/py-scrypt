@@ -44,17 +44,17 @@
 DL_EXPORT(int) exp_scryptenc_buf(const uint8_t *inbuf, size_t inbuflen,
                                  uint8_t *outbuf,
                                  const uint8_t *passwd, size_t passwdlen,
-                                 size_t maxmem, double maxmemfrac, double maxtime) {
+                                 size_t maxmem, double maxmemfrac, double maxtime, int verbose) {
     return scryptenc_buf(inbuf, inbuflen, outbuf, passwd, passwdlen,
-                         maxmem, maxmemfrac, maxtime);
+                         maxmem, maxmemfrac, maxtime, verbose);
 }
 
 DL_EXPORT(int) exp_scryptdec_buf(const uint8_t *inbuf, size_t inbuflen,
                                  uint8_t *outbuf, size_t *outbuflen,
                                  const uint8_t *passwd, size_t passwdlen,
-                                 size_t maxmem, double maxmemfrac, double maxtime) {
+                                 size_t maxmem, double maxmemfrac, double maxtime, int verbose) {
     return scryptdec_buf(inbuf, inbuflen, outbuf, outbuflen, passwd, passwdlen,
-                         maxmem, maxmemfrac, maxtime);
+                         maxmem, maxmemfrac, maxtime, verbose);
 }
 
 DL_EXPORT(int) exp_crypto_scrypt(const uint8_t *passwd, size_t passwdlen,

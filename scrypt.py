@@ -19,6 +19,7 @@ _scryptenc_buf.argtypes = [c_char_p,  # const uint_t  *inbuf
                            c_size_t,  # size_t         maxmem
                            c_double,  # double         maxmemfrac
                            c_double,  # double         maxtime
+                           c_int,     # int            verbose
                            ]
 _scryptenc_buf.restype = c_int
 
@@ -32,6 +33,7 @@ _scryptdec_buf.argtypes = [c_char_p,           # const uint8_t *inbuf
                            c_size_t,           # size_t         maxmem
                            c_double,           # double         maxmemfrac
                            c_double,           # double         maxtime
+                           c_int,              # int            verbose
                            ]
 _scryptdec_buf.restype = c_int
 
@@ -123,7 +125,7 @@ def encrypt(input, password,
     result = _scryptenc_buf(input, len(input),
                             outbuf,
                             password, len(password),
-                            maxmem, maxmemfrac, maxtime)
+                            maxmem, maxmemfrac, maxtime, 0)
     if result:
         raise error(result)
 
@@ -167,7 +169,7 @@ def decrypt(input, password,
     result = _scryptdec_buf(input, len(input),
                             outbuf, outbuflen,
                             password, len(password),
-                            maxmem, maxmemfrac, maxtime)
+                            maxmem, maxmemfrac, maxtime, 0)
 
     if result:
         raise error(result)
@@ -213,7 +215,7 @@ def hash(password, salt, N=1 << 14, r=8, p=1, buflen=64):
     result = _crypto_scrypt(password, len(password),
                             salt, len(salt),
                             N, r, p,
-                            outbuf, buflen)
+                            outbuf, buflen, 0)
 
     if result:
         raise error('could not compute hash')
