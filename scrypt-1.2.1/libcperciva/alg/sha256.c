@@ -7,6 +7,8 @@
 
 #include "sha256.h"
 
+#define _USE_RESTRICT 0
+
 /*
  * Encode a length len/4 vector of (uint32_t) into a length len vector of
  * (uint8_t) in big-endian form.  Assumes len is a multiple of 4.
@@ -93,7 +95,7 @@ static const uint32_t Krnd[64] = {
  * SHA256 block compression function.  The 256-bit state is transformed via
  * the 512-bit input block to produce a new state.
  */
-#ifndef _WIN32
+#if _USE_RESTRICT
 static void
 SHA256_Transform(uint32_t state[static restrict 8],
     const uint8_t block[static restrict 64],
@@ -164,7 +166,7 @@ static const uint8_t PAD[64] = {
 };
 
 /* Add padding and terminating bit-count. */
-#ifndef _WIN32
+#if _USE_RESTRICT
 static void
 SHA256_Pad(SHA256_CTX * ctx, uint32_t tmp32[static restrict 72])
 #else
@@ -222,7 +224,7 @@ SHA256_Init(SHA256_CTX * ctx)
  * SHA256_Update(ctx, in, len):
  * Input ${len} bytes from ${in} into the SHA256 context ${ctx}.
  */
-#ifndef _WIN32
+#if _USE_RESTRICT
 static void
 _SHA256_Update(SHA256_CTX * ctx, const void * in, size_t len,
     uint32_t tmp32[static restrict 72])
@@ -286,7 +288,7 @@ SHA256_Update(SHA256_CTX * ctx, const void * in, size_t len)
  * Output the SHA256 hash of the data input to the context ${ctx} into the
  * buffer ${digest}.
  */
-#ifndef _WIN32
+#if _USE_RESTRICT
 static void
 _SHA256_Final(uint8_t digest[32], SHA256_CTX * ctx,
     uint32_t tmp32[static restrict 72])
@@ -344,7 +346,7 @@ SHA256_Buf(const void * in, size_t len, uint8_t digest[32])
  * Initialize the HMAC-SHA256 context ${ctx} with ${Klen} bytes of key from
  * ${K}.
  */
-#ifndef _WIN32
+#if _USE_RESTRICT
 static void
 _HMAC_SHA256_Init(HMAC_SHA256_CTX * ctx, const void * _K, size_t Klen,
     uint32_t tmp32[static restrict 72], uint8_t pad[static restrict 64],
@@ -404,7 +406,7 @@ HMAC_SHA256_Init(HMAC_SHA256_CTX * ctx, const void * _K, size_t Klen)
  * HMAC_SHA256_Update(ctx, in, len):
  * Input ${len} bytes from ${in} into the HMAC-SHA256 context ${ctx}.
  */
-#ifndef _WIN32
+#if _USE_RESTRICT
 static void
 _HMAC_SHA256_Update(HMAC_SHA256_CTX * ctx, const void * in, size_t len,
     uint32_t tmp32[static restrict 72])
@@ -437,7 +439,7 @@ HMAC_SHA256_Update(HMAC_SHA256_CTX * ctx, const void * in, size_t len)
  * Output the HMAC-SHA256 of the data input to the context ${ctx} into the
  * buffer ${digest}.
  */
-#ifndef _WIN32
+#if _USE_RESTRICT
 static void
 _HMAC_SHA256_Final(uint8_t digest[32], HMAC_SHA256_CTX * ctx,
     uint32_t tmp32[static restrict 72], uint8_t ihash[static restrict 32])
