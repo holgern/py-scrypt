@@ -2,6 +2,8 @@
  Python scrypt_ bindings
 =========================
 
+.. contents::
+
 This is a set of Python_ bindings for the scrypt_ key derivation
 function.
 
