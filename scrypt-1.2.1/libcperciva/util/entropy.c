@@ -8,6 +8,11 @@
 
 #include "entropy.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#include <Wincrypt.h>
+#endif
+
 /**
  * XXX Portability
  * XXX We obtain random bytes from the operating system by opening
@@ -26,6 +31,7 @@ entropy_read(uint8_t * buf, size_t buflen)
 	int fd;
 	ssize_t lenread;
 
+#ifndef _WIN32
 	/* Sanity-check the buffer size. */
 	if (buflen > SSIZE_MAX) {
 		warn0("Programmer error: "
@@ -74,4 +80,27 @@ err1:
 err0:
 	/* Failure! */
 	return (-1);
+
+#else // _WIN32
+
+    HCRYPTPROV context;
+	DWORD error;
+
+    if(CryptAcquireContext(&context, NULL, NULL, PROV_RSA_AES, 0) == NTE_BAD_KEYSET)
+    {
+		if(!CryptAcquireContext(&context, NULL, NULL, PROV_RSA_AES, CRYPT_NEWKEYSET))
+		{
+			error = GetLastError();
+			return (-1);
+		}
+	}
+
+    if(CryptGenRandom(context, 32, buf))
+    {
+        buf += 32;
+        return (0);
+    }
+    else{return(-1);}
+
+#endif // _WIN32
 }
