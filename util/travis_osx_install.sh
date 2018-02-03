@@ -1,7 +1,6 @@
 #!/bin/bash
 brew update
-brew install ccache
-brew install openssl
+brew install ccache openssl aescrypt-packetizer
 
 git clone https://github.com/MacPython/terryfy.git ~/terryfy
 source ~/terryfy/travis_tools.sh
