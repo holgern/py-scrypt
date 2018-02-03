@@ -1,5 +1,5 @@
  Python scrypt_ bindings
-=========================
+========================
 
 .. contents::
 
@@ -119,6 +119,13 @@ License
 
 This library is licensed under the same license as scrypt; 2-clause BSD.
 
+Badges
+------
+.. image:: https://travis-ci.org/holgern/py-scrypt.svg?branch=master
+    :target: https://travis-ci.org/holgern/py-scrypt
+
+.. image:: https://ci.appveyor.com/api/projects/status/h644bjbdawke9vf2?svg=true
+    :target: https://ci.appveyor.com/project/HolgerNahrstaedt/py-scrypt-7uot6
 
 .. _scrypt-python: https://bitbucket.org/mhallin/py-scrypt/
 .. _scrypt: http://www.tarsnap.com/scrypt.html
