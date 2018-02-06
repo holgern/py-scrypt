@@ -59,6 +59,7 @@ script:
     if [ "${USE_WHEEL}" == "1" ]; then
         # Need verbose output or TravisCI will terminate after 10 minutes
         pip wheel . -v
+        cp *.whl ${TRAVIS_BUILD_DIR}/wheelhouse/
         pip install scrypt*.whl -v
         python setup.py test
     elif [ "${USE_SDIST}" == "1" ]; then
@@ -73,3 +74,9 @@ script:
         python setup.py build
         python setup.py test
     fi
+deploy:
+  provider: releases
+  api-key: ${GITHUB_OAUTH}
+  file_glob: true
+  file: ${TRAVIS_BUILD_DIR}/wheelhouse/*
+  skip_cleanup: true

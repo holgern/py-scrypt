@@ -23,8 +23,7 @@ if sys.platform.startswith('linux'):
                      ('HAVE_SYS_SYSINFO_H', '1'),
                      ('_FILE_OFFSET_BITS', '64')]
     libraries = ['crypto', 'rt']
-    includes = ['/usr/local/include', '/usr/include']
-    CFLAGS.append('-O2')
+    CFLAGS.append('-O2 -I/usr/include -I/usr/local/include')
 elif sys.platform.startswith('win32'):
     define_macros = [('inline', '__inline')]
     libraries = ['libeay32', 'advapi32']
@@ -42,6 +41,7 @@ elif sys.platform.startswith('darwin') and platform.mac_ver()[0] < '10.6':
     libraries = ['crypto']
     library_dirs = ['/usr/local/opt/openssl/lib']
     includes = ['/usr/local/opt/openssl/include']
+	CFLAGS.append('-L/usr/local/opt/openssl/lib -I/usr/local/opt/openssl/include')
 else:
     define_macros = [('HAVE_POSIX_MEMALIGN', '1'),
                      ('HAVE_SYSCTL_HW_USERMEM', '1')]
