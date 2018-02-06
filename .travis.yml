@@ -48,6 +48,7 @@ before_install:
   - which python; python --version
   - pip install --upgrade pip
   - pip install --upgrade wheel
+  - ${TRAVIS_BUILD_DIR}/wheelhouse
   # Set numpy version first, other packages link against it
   #- pip install Cython matplotlib nose coverage codecov futures
   - set -o pipefail
@@ -74,3 +75,10 @@ script:
         python setup.py build
         python setup.py test
     fi
+
+deploy:
+  provider: releases
+  api-key: ${GITHUB_OAUTH}
+  file_glob: true
+  file: ${TRAVIS_BUILD_DIR}/wheelhouse/*
+  skip_cleanup: true
