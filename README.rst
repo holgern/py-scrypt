@@ -23,7 +23,7 @@ Installation
 You can install py-scrypt from this repository if you want the latest
 but possibly non-compiling version::
 
-    $ git clone https://github.com/holgern/py-scrypt
+    $ hg clone http://bitbucket.org/mhallin/py-scrypt
     $ cd py-scrypt
     $ python setup.py build
 

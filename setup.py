@@ -81,12 +81,12 @@ scrypt_module = Extension(
     libraries=libraries)
 
 setup(name='scrypt',
-      version='0.8.2',
+      version='0.8.3',
       description='Bindings for the scrypt key derivation function library',
       author='Magnus Hallin',
       author_email='mhallin@gmail.com',
       maintainer="Holger Nahrstaedt",
-      maintainer_email="holgernahrstaedt@gmx.de",
+      maintainer_email="holger@nahrstaedt.de",
       url='http://bitbucket.org/mhallin/py-scrypt',
       py_modules=['scrypt'],
       ext_modules=[scrypt_module],
