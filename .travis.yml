@@ -15,7 +15,17 @@ matrix:
         - pip install pyflakes
       script:
         - PYFLAKES_NODOCTEST=1 pyflakes scrypt.py | grep -E -v 'unable to detect undefined names|assigned to but never used|imported but unused|redefinition of unused' > test.out; cat test.out; test \! -s test.out
-        - pep8 tests scrypt.py 
+        - pep8 tests scrypt.py
+    - os: linux
+      python: 2.7
+      env:
+        - USE_WHEEL=1
+    - os: linux
+      python: 3.5
+      env:
+        - USE_WHEEL=1
+    - os: linux
+      python: 3.6
     - os: linux
       python: 3.6
       env:
@@ -24,12 +34,6 @@ matrix:
       python: 3.6
       env:
         - USE_SDIST=1
-    - os: linux
-      python: 2.7
-    - os: linux
-      python: 3.5
-    - os: linux
-      python: 3.6
     - os: osx
       osx_image: xcode7.3
       language: objective-c
@@ -68,8 +72,8 @@ script:
         # Move out of source directory to avoid finding local scrypt
         pushd dist
         pip install scrypt* -v
-        python setup.py test
         popd
+        python setup.py test
     else
         #CFLAGS="--coverage" python setup.py build --build-lib build/lib/ --build-temp build/tmp/
         python setup.py build
