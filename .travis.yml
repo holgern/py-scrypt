@@ -74,9 +74,3 @@ script:
         python setup.py build
         python setup.py test
     fi
-deploy:
-  provider: releases
-  api-key: ${GITHUB_OAUTH}
-  file_glob: true
-  file: ${TRAVIS_BUILD_DIR}/wheelhouse/*
-  skip_cleanup: true
