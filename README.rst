@@ -1,7 +1,9 @@
- Python scrypt_ bindings
+Python scrypt_ bindings
 ========================
 
 .. contents::
+
+This github is  a clone of https://bitbucket.org/mhallin/py-scrypt. Please add issues and Pull-requests there.
 
 This is a set of Python_ bindings for the scrypt_ key derivation
 function.
@@ -94,8 +96,6 @@ you can use the ``hash`` function::
 Acknowledgements
 ----------------
 `scrypt-python`_ was created by Magnus Hallin and is licensed as 2-clause BSD.
-I cloned scrypt for python, as I need a version for anaconda using Python 3.6.
-The scrypt sources are also not updated since one year.
 
 Scrypt_ was created by Colin Percival and is licensed as 2-clause BSD.
 Since scrypt does not normally build as a shared library, I have included

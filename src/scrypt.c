@@ -1,5 +1,6 @@
 /*-
  * Copyright 2010 Magnus Hallin
+ *           2018 Holger Nahrstaedt
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

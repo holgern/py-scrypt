@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#-*- coding: utf-8 -*-
 from setuptools import setup, Extension
 
 import sys
@@ -79,9 +80,11 @@ scrypt_module = Extension(
 setup(name='scrypt',
       version='0.8.2',
       description='Bindings for the scrypt key derivation function library',
-      author='Holger Nahrstaedt',
-      author_email='holgernahrstaedt@gmx.de',
-      url='https://github.com/holgern/py-scrypt',
+      author='Magnus Hallin',
+      author_email='mhallin@gmail.com',
+      maintainer="Holger Nahrstaedt",
+      maintainer_email="holgernahrstaedt@gmx.de",
+      url='http://bitbucket.org/mhallin/py-scrypt',
       py_modules=['scrypt'],
       ext_modules=[scrypt_module],
       classifiers=['Development Status :: 4 - Beta',
