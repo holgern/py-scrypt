@@ -10,3 +10,4 @@ source ~/terryfy/travis_tools.sh
 get_python_environment macpython $TRAVIS_PYTHON_VERSION ~/macpython_venv
 source ~/macpython_venv/bin/activate
 pip install virtualenv
+pip install delocate 
