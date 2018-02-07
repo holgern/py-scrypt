@@ -19,16 +19,19 @@ matrix:
     - os: linux
       python: 2.7
       env:
+        - WHEEL_NAME = scrypt-0.8.3-cp27-cp27mu-linux_x86_64.whl
         - USE_WHEEL=1
     - os: linux
       python: 3.5
       env:
+        - WHEEL_NAME = crypt-0.8.3-cp35-cp35m-linux_x86_64.whl
         - USE_WHEEL=1
     - os: linux
       python: 3.6
     - os: linux
       python: 3.6
       env:
+        - WHEEL_NAME = scrypt-0.8.3-cp36-cp36m-linux_x86_64.whl
         - USE_WHEEL=1
     - os: linux
       python: 3.6
@@ -40,18 +43,21 @@ matrix:
       env:
         - USE_WHEEL=1
         - TRAVIS_PYTHON_VERSION=2.7
+        - WHEEL_NAME = scrypt-0.8.3-cp27-cp27m-macosx_10_6_intel.whl
     - os: osx
       osx_image: xcode7.3
       language: objective-c
       env:
         - USE_WHEEL=1
         - TRAVIS_PYTHON_VERSION=3.5
+        - WHEEL_NAME = scrypt-0.8.3-cp35-cp35m-macosx_10_6_intel.whl
     - os: osx
       osx_image: xcode9.2
       language: objective-c
       env:
         - USE_WHEEL=1
         - TRAVIS_PYTHON_VERSION=3.6
+        - WHEEL_NAME = scrypt-0.8.3-cp36-cp36m-macosx_10_6_intel.whl
 
 cache: pip
 
@@ -72,13 +78,13 @@ before_install:
 
 script:
   # Define a fixed build dir so next step works
-  - if [ "${USE_WHEEL}" == "1"]; pip wheel . -v; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then delocate-listdeps *.whl; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then delocate-wheel -w fixed_wheels -v *.whl; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then auditwheel show *.whl; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then auditwheel repair *.whl; fi
+  - if [[ "${USE_WHEEL}" == "1" ]]; pip wheel . -v; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then delocate-listdeps ${WHEEL_NAME}; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then delocate-wheel -w fixed_wheels -v ${WHEEL_NAME}; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then auditwheel show ${WHEEL_NAME}; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then auditwheel repair ${WHEEL_NAME}; fi
   - |
-    if [ "${USE_WHEEL}" == "1"]; then
+    if [ "${USE_WHEEL}" == "1" ]; then
         # Need verbose output or TravisCI will terminate after 10 minutes
         #pip wheel . -v
         cp *.whl ${TRAVIS_BUILD_DIR}/wheelhouse/
