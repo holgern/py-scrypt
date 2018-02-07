@@ -1,5 +1,5 @@
 Python scrypt_ bindings
-========================
+=======================
 
 .. contents::
 
@@ -18,7 +18,32 @@ MD5 or the SHA family which can be implemented extremely fast on cheap
 hardware.
 
 Installation
-------------
+============
+
+For Debian and Ubuntu, please ensure that the following packages are installed:
+	
+.. code:: bash
+
+    $ sudo apt-get install build-essential libssl-dev python-dev
+
+For Fedora and RHEL-derivatives, please ensure that the following packages are installed:
+
+.. code:: bash
+
+    $ sudo yum install gcc openssl-devel python-devel
+
+For OSX, please do the following:
+
+    $ brew install openssl
+    $ export LDFLAGS="-L/usr/local/opt/openssl/lib"
+    $ export CPPFLAGS="-I/usr/local/opt/openssl/include"
+    $ export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
+
+For OSX, you can also use the precompiled wheels. They are installed by
+    $ pip install scrypt 
+	
+For Windows, please use the precompiled wheels. They are installed by
+    $ pip install scrypt
 
 You can install py-scrypt from this repository if you want the latest
 but possibly non-compiling version::
@@ -44,8 +69,17 @@ Python 2 and 3.
 From version 0.6.0 (not available on PyPi yet), py-scrypt supports
 PyPy as well.
 
-Usage
+Changelog
+=========
+0.8.3
 -----
+
+* scrypt updated to 1.2.1
+* Wheels are created for python 3.6
+
+
+Usage
+=====
 
 Fore encryption/decryption, the library exports two functions
 ``encrypt`` and ``decrypt``::
@@ -94,7 +128,7 @@ you can use the ``hash`` function::
 
 
 Acknowledgements
-----------------
+================
 `scrypt-python`_ was created by Magnus Hallin and is licensed as 2-clause BSD.
 
 Scrypt_ was created by Colin Percival and is licensed as 2-clause BSD.
@@ -115,17 +149,21 @@ The `python-appveyor-demo`_ repository for setting up automated Windows
 builds for a multitude of Python versions.
 
 License
--------
+=======
 
 This library is licensed under the same license as scrypt; 2-clause BSD.
 
 Badges
-------
+======
 .. image:: https://travis-ci.org/holgern/py-scrypt.svg?branch=master
     :target: https://travis-ci.org/holgern/py-scrypt
 
 .. image:: https://ci.appveyor.com/api/projects/status/h644bjbdawke9vf2?svg=true
     :target: https://ci.appveyor.com/project/HolgerNahrstaedt/py-scrypt-7uot6
+
+.. image:: https://img.shields.io/pypi/v/scrypt.svg
+    :target: https://pypi.python.org/pypi/scrypt/
+    :alt: Latest Version
 
 .. _scrypt-python: https://bitbucket.org/mhallin/py-scrypt/
 .. _scrypt: http://www.tarsnap.com/scrypt.html
