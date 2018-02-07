@@ -73,17 +73,11 @@ before_install:
 script:
   # Define a fixed build dir so next step works
   - |
-    if [ "${USE_WHEEL}" == "1" && "$TRAVIS_OS_NAME" == "osx" ]; then
+    if [ "${USE_WHEEL}" == "1"]; then
         # Need verbose output or TravisCI will terminate after 10 minutes
         pip wheel . -v
-        delocate-listdeps *.whl
-        delocate-wheel -w fixed_wheels -v *.whl
-        cp *.whl ${TRAVIS_BUILD_DIR}/wheelhouse/
-        pip install scrypt*.whl -v
-        python setup.py test
-    elif [ "${USE_WHEEL}" == "1" ]; then
-        # Need verbose output or TravisCI will terminate after 10 minutes
-        pip wheel . -v
+        if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then delocate-listdeps *.whl; fi
+        if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then delocate-wheel -w fixed_wheels -v *.whl; fi        
         cp *.whl ${TRAVIS_BUILD_DIR}/wheelhouse/
         pip install scrypt*.whl -v
         python setup.py test
@@ -107,4 +101,4 @@ deploy:
   file: ${TRAVIS_BUILD_DIR}/wheelhouse/*
   skip_cleanup: true
   on:
-    tags: true
+    tags: false
