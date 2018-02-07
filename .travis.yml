@@ -81,16 +81,15 @@ script:
   - |
     if [ "${USE_WHEEL}" == "1" ]; then
         pip wheel . -v
-    fi
-  - |
-    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-        delocate-listdeps ${WHEEL_NAME}
-        delocate-wheel -w fixed_wheels -v ${WHEEL_NAME}
-    fi
-  - |
-    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-        auditwheel show ${WHEEL_NAME}
-        auditwheel repair ${WHEEL_NAME}
+        if [ "$TRAVIS_OS_NAME" == "osx" & "${USE_WHEEL}" == "1" ]; then
+            delocate-listdeps scrypt*.whl
+            delocate-wheel -w fixed_wheels -v scrypt*.whl
+        fi
+  
+        if [ "$TRAVIS_OS_NAME" == "linux" & "${USE_WHEEL}" == "1"]; then
+           auditwheel show scrypt*.whl
+           auditwheel repair scrypt*.whl
+        fi
     fi
   - |
     if [ "${USE_WHEEL}" == "1" ]; then
