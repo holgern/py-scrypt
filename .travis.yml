@@ -74,7 +74,7 @@ before_install:
 script:
   # Define a fixed build dir so next step works
   - |
-    if [ "${USE_WHEEL}" == "1"]; then
+    if [[ "${USE_WHEEL}" == "1"]]; then
         # Need verbose output or TravisCI will terminate after 10 minutes
         pip wheel . -v
         if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then delocate-listdeps *.whl; fi
@@ -84,7 +84,7 @@ script:
         cp *.whl ${TRAVIS_BUILD_DIR}/wheelhouse/
         pip install scrypt*.whl -v
         python setup.py test
-    elif [ "${USE_SDIST}" == "1" ]; then
+    elif [[ "${USE_SDIST}" == "1" ]]; then
         python setup.py sdist
         # Move out of source directory to avoid finding local scrypt
         pushd dist
