@@ -35,14 +35,15 @@ For Fedora and RHEL-derivatives, please ensure that the following packages are i
 For OSX, please do the following::
 
     $ brew install openssl
-    $ export LDFLAGS="-L/usr/local/opt/openssl/lib"
-    $ export CPPFLAGS="-I/usr/local/opt/openssl/include"
-    $ export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
+    $ export CFLAGS="-I$(brew --prefix openssl)/include $CFLAGS"
+    $ export LDFLAGS="-L$(brew --prefix openssl)/lib $LDFLAGS"
 
 For OSX, you can also use the precompiled wheels. They are installed by::
+
     $ pip install scrypt 
 	
 For Windows, please use the precompiled wheels. They are installed by::
+
     $ pip install scrypt
 
 You can install py-scrypt from this repository if you want the latest
