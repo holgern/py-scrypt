@@ -78,11 +78,20 @@ before_install:
 
 script:
   # Define a fixed build dir so next step works
-  - if [[ "${USE_WHEEL}" == "1" ]]; pip wheel . -v; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then delocate-listdeps ${WHEEL_NAME}; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then delocate-wheel -w fixed_wheels -v ${WHEEL_NAME}; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then auditwheel show ${WHEEL_NAME}; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then auditwheel repair ${WHEEL_NAME}; fi
+  - |
+    if [ "${USE_WHEEL}" == "1" ]; then
+        pip wheel . -v
+    fi
+  - |
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+        delocate-listdeps ${WHEEL_NAME}
+        delocate-wheel -w fixed_wheels -v ${WHEEL_NAME}
+    fi
+  - |
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+        auditwheel show ${WHEEL_NAME}
+        auditwheel repair ${WHEEL_NAME}
+    fi
   - |
     if [ "${USE_WHEEL}" == "1" ]; then
         # Need verbose output or TravisCI will terminate after 10 minutes
