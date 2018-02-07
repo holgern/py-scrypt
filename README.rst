@@ -159,7 +159,8 @@ Badges
     :target: https://travis-ci.org/holgern/py-scrypt
 
 .. image:: https://ci.appveyor.com/api/projects/status/h644bjbdawke9vf2?svg=true
-    :target: https://ci.appveyor.com/project/HolgerNahrstaedt/py-scrypt-7uot6
+    :target: https://ci.appveyor.com/project/holger80/py-scrypt-7uot6
+	
 
 .. image:: https://img.shields.io/pypi/v/scrypt.svg
     :target: https://pypi.python.org/pypi/scrypt/
