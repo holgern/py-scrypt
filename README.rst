@@ -32,17 +32,17 @@ For Fedora and RHEL-derivatives, please ensure that the following packages are i
 
     $ sudo yum install gcc openssl-devel python-devel
 
-For OSX, please do the following:
+For OSX, please do the following::
 
     $ brew install openssl
     $ export LDFLAGS="-L/usr/local/opt/openssl/lib"
     $ export CPPFLAGS="-I/usr/local/opt/openssl/include"
     $ export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
 
-For OSX, you can also use the precompiled wheels. They are installed by
+For OSX, you can also use the precompiled wheels. They are installed by::
     $ pip install scrypt 
 	
-For Windows, please use the precompiled wheels. They are installed by
+For Windows, please use the precompiled wheels. They are installed by::
     $ pip install scrypt
 
 You can install py-scrypt from this repository if you want the latest
