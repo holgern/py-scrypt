@@ -69,7 +69,6 @@ before_install:
   # Set numpy version first, other packages link against it
   #- pip install Cython matplotlib nose coverage codecov futures
   - set -o pipefail
-  - |
 
 script:
   # Define a fixed build dir so next step works
