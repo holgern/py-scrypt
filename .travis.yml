@@ -1,8 +1,9 @@
 # After changing this file, check it on:
 #   http://lint.travis-ci.org/
 language: python
-dist: trusty
-sudo: required
+sudo: false
+#dist: trusty
+#sudo: required
 
 matrix:
   include:
@@ -22,19 +23,19 @@ matrix:
       env:
         - USE_WHEEL=1
         - LINUX_WHEEL=1
-      addons:
-        apt:
-          packages:
-            - patchelf
+#      addons:
+#        apt:
+#          packages:
+#            - patchelf
     - os: linux
       python: 3.5
       env:
         - USE_WHEEL=1
         - LINUX_WHEEL=1
-      addons:
-        apt:
-          packages:
-            - patchelf
+#      addons:
+#        apt:
+#          packages:
+#            - patchelf
     - os: linux
       python: 3.6
     - os: linux
@@ -42,10 +43,10 @@ matrix:
       env:
         - USE_WHEEL=1
         - LINUX_WHEEL=1
-      addons:
-        apt:
-          packages:
-            - patchelf
+#      addons:
+#        apt:
+#          packages:
+#            - patchelf
     - os: linux
       python: 3.6
       env:
@@ -101,10 +102,10 @@ script:
        delocate-wheel -w fixed_wheels -v scrypt*.whl
     fi
   - |
-    if [ "${LINUX_WHEEL}" == "1" ]; then
-       auditwheel show scrypt*.whl
-       auditwheel repair scrypt*.whl
-    fi
+#    if [ "${LINUX_WHEEL}" == "1" ]; then
+#       auditwheel show scrypt*.whl
+#       auditwheel repair scrypt*.whl
+#    fi
   - |
     if [ "${USE_WHEEL}" == "1" ]; then
         # Need verbose output or TravisCI will terminate after 10 minutes
