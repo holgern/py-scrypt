@@ -3,6 +3,8 @@ include README.rst
 include LICENSE
 include src/*.c
 
+include scrypt/__init__.py
+include scrypt/scrypt.py
 include tests/__init__.py
 include tests/ciphertexts.csv
 include tests/hashvectors.csv
