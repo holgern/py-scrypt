@@ -1,4 +1,5 @@
 recursive-include scrypt-1.2.1 *.h
+recursive-include scrypt-windows-stubs *.h
 include README.rst
 include LICENSE
 include src/*.c
