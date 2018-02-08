@@ -108,20 +108,22 @@ script:
   - |
     if [ "${MAC_WHEEL}" == "1" ]; then
        delocate-listdeps scrypt*.whl
-       delocate-wheel -w wheelhouse -v scrypt*.whl
-       delocate-listdeps --all wheelhouse/scrypt*.whl
+       delocate-wheel -w fixed_wheel -v scrypt*.whl
+       delocate-listdeps --all fixed_wheel/scrypt*.whl
+       cp fixed_wheel/scrypt*.whl ${TRAVIS_BUILD_DIR}/wheelhouse/
+       pip install wheelhouse/scrypt*.whl -v
     fi
   - |
-#    if [ "${LINUX_WHEEL}" == "1" ]; then
+    if [ "${LINUX_WHEEL}" == "1" ]; then
+        cp *.whl ${TRAVIS_BUILD_DIR}/wheelhouse/
 #       auditwheel show scrypt*.whl
 #       auditwheel repair scrypt*.whl
-#    fi
+        pip install scrypt*.whl -v
+    fi
   - |
     if [ "${USE_WHEEL}" == "1" ]; then
         # Need verbose output or TravisCI will terminate after 10 minutes
         #pip wheel . -v
-        cp *.whl ${TRAVIS_BUILD_DIR}/wheelhouse/
-        pip install wheelhouse/scrypt*.whl -v
         python setup.py test
     elif [ "${USE_SDIST}" == "1" ]; then
         python setup.py sdist
