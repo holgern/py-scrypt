@@ -89,11 +89,9 @@ before_install:
   - df -h
   - ulimit -a
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source util/travis_osx_install.sh; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source util/travis_linux_install.sh; fi
   - ccache -s
   - which python; python --version
-  - pip install --upgrade pip
-  - pip install --upgrade wheel
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then pip install --upgrade auditwheel; fi
   - mkdir ${TRAVIS_BUILD_DIR}/wheelhouse
   # Set numpy version first, other packages link against it
   #- pip install Cython matplotlib nose coverage codecov futures
@@ -108,20 +106,19 @@ script:
   - |
     if [ "${MAC_WHEEL}" == "1" ]; then
        delocate-listdeps scrypt*.whl
-       delocate-wheel -v scrypt*.whl
-       delocate-listdeps scrypt*.whl
+       delocate-wheel -w wheelhouse -v scrypt*.whl
+       delocate-listdeps --all wheelhouse/scrypt*.whl
+       pip install wheelhouse/scrypt*.whl -v
     fi
   - |
-#    if [ "${LINUX_WHEEL}" == "1" ]; then
+    if [ "${LINUX_WHEEL}" == "1" ]; then
 #       auditwheel show scrypt*.whl
 #       auditwheel repair scrypt*.whl
-#    fi
-  - |
-    if [ "${USE_WHEEL}" == "1" ]; then
-        # Need verbose output or TravisCI will terminate after 10 minutes
-        #pip wheel . -v
         cp *.whl ${TRAVIS_BUILD_DIR}/wheelhouse/
         pip install scrypt*.whl -v
+    fi
+  - |
+    if [ "${USE_WHEEL}" == "1" ]; then
         python setup.py test
     elif [ "${USE_SDIST}" == "1" ]; then
         python setup.py sdist

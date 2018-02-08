@@ -53,6 +53,7 @@ python -m pip install --user virtualenv
 python -m virtualenv ~/.venv
 source ~/.venv/bin/activate
 # This coverage pin must be kept in sync with tox.ini
+pip install --upgrade pip
+pip install --upgrade wheel
 pip install tox
-
 pip install delocate 
