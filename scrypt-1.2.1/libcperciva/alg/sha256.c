@@ -101,6 +101,7 @@ SHA256_Transform(uint32_t state[static restrict 8],
     const uint8_t block[static restrict 64],
     uint32_t W[static restrict 64], uint32_t S[static restrict 8])
 #else
+static void
 SHA256_Transform(uint32_t state[8],
     const uint8_t block[64],
     uint32_t W[64], uint32_t S[8])
