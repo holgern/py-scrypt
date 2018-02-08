@@ -17,7 +17,7 @@ matrix:
         - pip install pyflakes
       script:
         - PYFLAKES_NODOCTEST=1 pyflakes scrypt.py | grep -E -v 'unable to detect undefined names|assigned to but never used|imported but unused|redefinition of unused' > test.out; cat test.out; test \! -s test.out
-        - pep8 tests scrypt.py
+        - pep8 tests scrypt
     - os: linux
       python: 2.7
       env:
