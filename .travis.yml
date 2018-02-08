@@ -108,7 +108,7 @@ script:
   - |
     if [ "${MAC_WHEEL}" == "1" ]; then
        delocate-listdeps scrypt*.whl
-       delocate-wheel -w fixed_wheels -v scrypt*.whl
+       delocate-wheel -v scrypt*.whl
        delocate-listdeps scrypt*.whl
     fi
   - |
