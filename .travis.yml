@@ -2,7 +2,7 @@
 #   http://lint.travis-ci.org/
 language: python
 sudo: false
-#dist: trusty
+dist: trusty
 #sudo: required
 
 matrix:
@@ -84,15 +84,25 @@ matrix:
 
 cache: pip
 
-install:
-  - ./.travis/install.sh
+before_install:
+  - uname -a
+  - df -h
+  - ulimit -a
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source util/travis_osx_install.sh; fi
+  - ccache -s
+  - which python; python --version
+  - pip install --upgrade pip
+  - pip install --upgrade wheel
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then pip install --upgrade auditwheel; fi
+  - mkdir ${TRAVIS_BUILD_DIR}/wheelhouse
+  # Set numpy version first, other packages link against it
+  #- pip install Cython matplotlib nose coverage codecov futures
   - set -o pipefail
 
 script:
   # Define a fixed build dir so next step works
   - |
     if [ "${USE_WHEEL}" == "1" ]; then
-        mkdir ${TRAVIS_BUILD_DIR}/wheelhouse
         pip wheel . -v
     fi
   - |
