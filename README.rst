@@ -40,7 +40,6 @@ For OSX, please do the following::
 
 For OSX, you can also use the precompiled wheels. They are installed by::
 
-    $ brew install openssl
     $ pip install scrypt 
 	
 For Windows, please use the precompiled wheels. They are installed by::
