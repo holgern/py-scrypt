@@ -64,6 +64,12 @@ Or you can install the latest release from PyPi::
 
     $ pip install scrypt
 
+Users of the Anaconda_ Python distribution can directly obtain pre-built
+Windows, Intel Linux or macOS / OSX binaries from the conda-forge channel.
+This can be done via::
+
+    $ conda install -c conda-forge scrypt
+
 If you want py-scrypt for your Python 3 environment, just run the
 above commands with your Python 3 interpreter. Py-scrypt supports both
 Python 2 and 3.
@@ -167,6 +173,12 @@ Badges
 .. image:: https://img.shields.io/pypi/v/scrypt.svg
     :target: https://pypi.python.org/pypi/scrypt/
     :alt: Latest Version
+  
+.. image:: https://anaconda.org/conda-forge/scrypt/badges/version.svg   
+    :target: https://anaconda.org/conda-forge/scrypt
+  
+.. image:: https://anaconda.org/conda-forge/scrypt/badges/downloads.svg   
+    :target: https://anaconda.org/conda-forge/scrypt
 
 .. _scrypt-python: https://bitbucket.org/mhallin/py-scrypt/
 .. _scrypt: http://www.tarsnap.com/scrypt.html
@@ -174,3 +186,4 @@ Badges
 .. _Burstaholic: https://bitbucket.org/Burstaholic
 .. _Kelvin Wong: https://bitbucket.org/kelvinwong_ca
 .. _python-appveyor-demo: https://github.com/ogrisel/python-appveyor-demo
+.. _Anaconda: https://www.continuum.io
