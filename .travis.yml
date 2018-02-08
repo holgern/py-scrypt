@@ -1,7 +1,8 @@
 # After changing this file, check it on:
 #   http://lint.travis-ci.org/
 language: python
-sudo: false
+dist: trusty
+sudo: required
 
 matrix:
   include:
