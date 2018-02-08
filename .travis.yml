@@ -149,4 +149,4 @@ deploy:
   file: ${TRAVIS_BUILD_DIR}/wheelhouse/*
   skip_cleanup: true
   on:
-    tags: false
+    tags: true
