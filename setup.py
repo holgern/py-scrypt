@@ -7,6 +7,7 @@ import platform
 import struct
 
 includes = []
+libraries = []
 library_dirs = []
 extra_sources = []
 CFLAGS = []
@@ -23,7 +24,7 @@ if sys.platform.startswith('linux'):
                      ('HAVE_SYS_SYSINFO_H', '1'),
                      ('_FILE_OFFSET_BITS', '64')]
     libraries = ['crypto', 'rt']
-    include_dirs = ['/usr/local/include', '/usr/include']
+    includes = ['/usr/local/include', '/usr/include']
     CFLAGS.append('-O2')
 elif sys.platform.startswith('win32'):
     define_macros = [('inline', '__inline')]
