@@ -103,14 +103,16 @@ before_install:
   - set -o pipefail
 
 script:
- - ./util/run.sh
   # Define a fixed build dir so next step works
   - |
-    if [ "${USE_WHEEL}" == "1" ]; then
+    if [ "${LINUX_WHEEL}" == "1" ]; then
         pip wheel . -v
     fi
   - |
     if [ "${MAC_WHEEL}" == "1" ]; then
+       export LDFLAGS="/usr/local/opt/openssl\@1.1/lib/libssl.a /usr/local/opt/openssl\@1.1/lib/libcrypto.a"
+       export CFLAGS="-I/usr/local/opt/openssl\@1.1/include"
+       pip wheel . -v
        delocate-listdeps scrypt*.whl
        delocate-wheel -v scrypt*.whl
        delocate-listdeps --all scrypt*.whl
