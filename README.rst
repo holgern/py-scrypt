@@ -79,6 +79,13 @@ PyPy as well.
 
 Changelog
 =========
+0.8.4
+-----
+
+* __version__ added to scrypt
+* missing void in sha256.c fixed
+* OSX-Wheels are corrected with delocate
+
 0.8.3
 -----
 
