@@ -79,6 +79,12 @@ PyPy as well.
 
 Changelog
 =========
+0.8.5
+-----
+
+* MANIFEST.in fixed
+* scrypt.py moved into own scrypt directory with __init__.py 
+
 0.8.4
 -----
 

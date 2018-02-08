@@ -3,6 +3,8 @@ recursive-include scrypt-windows-stubs *.h
 include README.rst
 include LICENSE
 include src/*.c
+include MANIFEST.in
+include MANIFEST.in
 
 include scrypt/__init__.py
 include scrypt/scrypt.py
@@ -13,3 +15,11 @@ include tests/test_scrypt_c_module.py
 include tests/test_scrypt.py
 include tests/test_scrypt_py2x.py
 include tests/test_scrypt_py3x.py
+
+# Exclude what we don't want to include
+prune build
+prune doc/build
+prune */__pycache__
+
+global-exclude *.py[cod] *.egg *.egg-info
+global-exclude *~ *.bak *.swp
