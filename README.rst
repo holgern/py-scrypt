@@ -83,7 +83,8 @@ Changelog
 -----
 
 * MANIFEST.in fixed
-* scrypt.py moved into own scrypt directory with __init__.py 
+* scrypt.py moved into own scrypt directory with __init__.py
+* openssl library path for osx wheel repaired
 
 0.8.4
 -----

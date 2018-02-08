@@ -40,7 +40,7 @@ elif sys.platform.startswith('win32'):
 
 elif sys.platform.startswith('darwin') and platform.mac_ver()[0] < '10.6':
     define_macros = [('HAVE_SYSCTL_HW_USERMEM', '1')]
-    #libraries = ['crypto']
+    libraries = ['crypto']
     #library_dirs = ['/usr/local/opt/openssl/lib']
     #include_dirs = ['/usr/local/opt/openssl/include']
 else:
