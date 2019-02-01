@@ -32,11 +32,11 @@ elif sys.platform.startswith('win32'):
     extra_sources = ['scrypt-windows-stubs/gettimeofday.c']
 
     if struct.calcsize('P') == 8:
-        library_dirs = ['c:\OpenSSL-Win64\lib']
-        includes = ['c:\OpenSSL-Win64\include', 'scrypt-windows-stubs/include']
+        library_dirs = ['c:\OpenSSL-v111-Win64\lib']
+        includes = ['c:\OpenSSL-v111-Win64\include', 'scrypt-windows-stubs/include']
     else:
-        library_dirs = ['c:\OpenSSL-Win32\lib']
-        includes = ['c:\OpenSSL-Win32\include', 'scrypt-windows-stubs/include']
+        library_dirs = ['c:\OpenSSL-v111-Win32\lib']
+        includes = ['c:\OpenSSL-v111-Win32\include', 'scrypt-windows-stubs/include']
 
 elif sys.platform.startswith('darwin') and platform.mac_ver()[0] < '10.6':
     define_macros = [('HAVE_SYSCTL_HW_USERMEM', '1')]
