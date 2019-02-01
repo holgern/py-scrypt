@@ -40,6 +40,14 @@ environment:
       PYTHON_VERSION: "3.6.3"
       PYTHON_ARCH: "64"
 
+    - PYTHON: "C:\\Python37"
+      PYTHON_VERSION: "3.7"
+      PYTHON_ARCH: "32"
+
+    - PYTHON: "C:\\Python37-x64"
+      PYTHON_VERSION: "3.7"
+      PYTHON_ARCH: "64"
+
 install:
   # If there is a newer build queued for the same PR, cancel this one.
   # The AppVeyor 'rollout builds' option is supposed to serve the same
@@ -85,22 +93,10 @@ after_test:
   # If tests are successful, create binary packages for the project.
   - "%CMD_IN_ENV% pip install wheel"
   - "%CMD_IN_ENV% python setup.py bdist_wheel"
-  #- "%CMD_IN_ENV% python setup.py bdist_wininst"
-  #- "%CMD_IN_ENV% python setup.py bdist_msi"
+  - "%CMD_IN_ENV% python setup.py bdist_wininst"
+  - "%CMD_IN_ENV% python setup.py bdist_msi"
   - ps: "ls dist"
 
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
   - path: dist\*
-
-deploy:
-  description: 'wheel from appveyor'
-  provider: GitHub
-  auth_token:
-    secure:  cWOjktNgOeRYJwkvayAASUlkYKo5uQt7ZrvP0CQ/a+0QEOB3ArlciA8JzP3+Tr/S  # your encrypted token from GitHub
-  draft: false
-  prerelease: false
-  force_update: true
-  on:
-    branch: master                 # release from master branch only
-    appveyor_repo_tag: true        # deploy on tag push only
