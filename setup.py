@@ -28,7 +28,7 @@ if sys.platform.startswith('linux'):
     CFLAGS.append('-O2')
 elif sys.platform.startswith('win32'):
     define_macros = [('inline', '__inline')]
-    libraries = ['libeay32', 'advapi32']
+    libraries = ['libcrypto', 'advapi32']
     extra_sources = ['scrypt-windows-stubs/gettimeofday.c']
 
     if struct.calcsize('P') == 8:
@@ -41,12 +41,12 @@ elif sys.platform.startswith('win32'):
 elif sys.platform.startswith('darwin') and platform.mac_ver()[0] < '10.6':
     define_macros = [('HAVE_SYSCTL_HW_USERMEM', '1')]
 	# disable for travis
-    # libraries = ['crypto']
+    libraries = ['crypto']
 elif sys.platform.startswith('darwin'):
     define_macros = [('HAVE_POSIX_MEMALIGN', '1'),
                      ('HAVE_SYSCTL_HW_USERMEM', '1')]
 	# disable for travis
-    # libraries = ['crypto']
+    libraries = ['crypto']
 else:
     define_macros = [('HAVE_POSIX_MEMALIGN', '1'),
                      ('HAVE_SYSCTL_HW_USERMEM', '1')]
@@ -69,8 +69,8 @@ scrypt_module = Extension(
              'scrypt-1.2.1/libcperciva/util/entropy.c',
              'scrypt-1.2.1/libcperciva/util/insecure_memzero.c',
              'scrypt-1.2.1/libcperciva/util/warnp.c',
-			 'scrypt-1.2.1/libcperciva/util/humansize.c',
-			 'scrypt-1.2.1/libcperciva/util/asprintf.c'] + extra_sources,
+             'scrypt-1.2.1/libcperciva/util/humansize.c',
+             'scrypt-1.2.1/libcperciva/util/asprintf.c'] + extra_sources,
     include_dirs=['scrypt-1.2.1',
                   'scrypt-1.2.1/lib',
                   'scrypt-1.2.1/lib/scryptenc',
@@ -86,7 +86,7 @@ scrypt_module = Extension(
     libraries=libraries)
 
 setup(name='scrypt',
-      version='0.8.6',
+      version='0.8.7',
       description='Bindings for the scrypt key derivation function library',
       author='Magnus Hallin',
       author_email='mhallin@gmail.com',
@@ -102,7 +102,8 @@ setup(name='scrypt',
                    'Programming Language :: Python :: 3',
                    'Programming Language :: Python :: 3.4',
                    'Programming Language :: Python :: 3.5',
-				   'Programming Language :: Python :: 3.6',
+                   'Programming Language :: Python :: 3.6',
+                   'Programming Language :: Python :: 3.7',
                    'Topic :: Security :: Cryptography',
                    'Topic :: Software Development :: Libraries'],
       license='2-clause BSD',

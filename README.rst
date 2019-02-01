@@ -1,12 +1,20 @@
-Python scrypt_ bindings
-=======================
-
-.. contents::
-
-This github is  a clone of https://bitbucket.org/mhallin/py-scrypt. Please add issues and Pull-requests there.
+=========================
+ Python scrypt_ bindings
+=========================
 
 This is a set of Python_ bindings for the scrypt_ key derivation
 function.
+
+.. image:: https://img.shields.io/pypi/v/scrypt.svg
+    :target: https://pypi.python.org/pypi/scrypt/
+    :alt: Latest Version
+  
+.. image:: https://anaconda.org/conda-forge/scrypt/badges/version.svg   
+    :target: https://anaconda.org/conda-forge/scrypt
+  
+.. image:: https://anaconda.org/conda-forge/scrypt/badges/downloads.svg   
+    :target: https://anaconda.org/conda-forge/scrypt
+
 
 Scrypt is useful when encrypting password as it is possible to specify
 a *minimum* amount of time to use when encrypting and decrypting. If,
@@ -46,6 +54,9 @@ For Windows, please use the precompiled wheels. They are installed by::
 
     $ pip install scrypt
 
+For Windows, when the package should be compiled, the development package from https://slproweb.com/products/Win32OpenSSL.html is needed.
+It needs to be installed to C:\OpenSSL-Win64.
+
 You can install py-scrypt from this repository if you want the latest
 but possibly non-compiling version::
 
@@ -69,6 +80,7 @@ This can be done via::
 
     $ conda install -c conda-forge scrypt
 
+
 If you want py-scrypt for your Python 3 environment, just run the
 above commands with your Python 3 interpreter. Py-scrypt supports both
 Python 2 and 3.
@@ -78,11 +90,21 @@ PyPy as well.
 
 Changelog
 =========
+0.8.7
+-----
+
+* setup.py for windows fixed
+
+0.8.6
+-----
+
+* setup.py fixed, scrypt could not be imported in version 0.8.5
+
 0.8.5
 -----
 
 * MANIFEST.in fixed
-* scrypt.py moved into own scrypt directory with __init__.py
+* scrypt.py moved into own scrypt directory with __init__.py 
 * openssl library path for osx wheel repaired
 
 0.8.4
@@ -96,7 +118,6 @@ Changelog
 
 * scrypt updated to 1.2.1
 * Wheels are created for python 3.6
-
 
 Usage
 =====
@@ -149,7 +170,6 @@ you can use the ``hash`` function::
 
 Acknowledgements
 ================
-`scrypt-python`_ was created by Magnus Hallin and is licensed as 2-clause BSD.
 
 Scrypt_ was created by Colin Percival and is licensed as 2-clause BSD.
 Since scrypt does not normally build as a shared library, I have included
@@ -173,26 +193,6 @@ License
 
 This library is licensed under the same license as scrypt; 2-clause BSD.
 
-Badges
-======
-.. image:: https://travis-ci.org/holgern/py-scrypt.svg?branch=master
-    :target: https://travis-ci.org/holgern/py-scrypt
-
-.. image:: https://ci.appveyor.com/api/projects/status/h644bjbdawke9vf2?svg=true
-    :target: https://ci.appveyor.com/project/holger80/py-scrypt-7uot6
-	
-
-.. image:: https://img.shields.io/pypi/v/scrypt.svg
-    :target: https://pypi.python.org/pypi/scrypt/
-    :alt: Latest Version
-  
-.. image:: https://anaconda.org/conda-forge/scrypt/badges/version.svg   
-    :target: https://anaconda.org/conda-forge/scrypt
-  
-.. image:: https://anaconda.org/conda-forge/scrypt/badges/downloads.svg   
-    :target: https://anaconda.org/conda-forge/scrypt
-
-.. _scrypt-python: https://bitbucket.org/mhallin/py-scrypt/
 .. _scrypt: http://www.tarsnap.com/scrypt.html
 .. _Python: http://python.org
 .. _Burstaholic: https://bitbucket.org/Burstaholic
