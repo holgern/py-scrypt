@@ -90,6 +90,11 @@ PyPy as well.
 
 Changelog
 =========
+0.8.8
+-----
+
+* setup.py for windows improved, works with openssl 1.0.2 and 1.1.1
+
 0.8.7
 -----
 

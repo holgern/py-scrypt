@@ -5,6 +5,7 @@ from setuptools import setup, Extension
 import sys
 import platform
 import struct
+import os
 
 includes = []
 libraries = []
@@ -28,15 +29,26 @@ if sys.platform.startswith('linux'):
     CFLAGS.append('-O2')
 elif sys.platform.startswith('win32'):
     define_macros = [('inline', '__inline')]
-    libraries = ['libcrypto', 'advapi32']
-    extra_sources = ['scrypt-windows-stubs/gettimeofday.c']
 
+    extra_sources = ['scrypt-windows-stubs/gettimeofday.c']
     if struct.calcsize('P') == 8:
-        library_dirs = ['c:\OpenSSL-v111-Win64\lib']
-        includes = ['c:\OpenSSL-v111-Win64\include', 'scrypt-windows-stubs/include']
+        if os.path.isdir('c:\OpenSSL-Win64'):
+            openssl_dir = 'c:\OpenSSL-Win64'
+        else:
+            openssl_dir = 'c:\OpenSSL-v111-Win64'
+        library_dirs = [openssl_dir + '\lib']
+        includes = [openssl_dir + '\include', 'scrypt-windows-stubs/include']
     else:
-        library_dirs = ['c:\OpenSSL-v111-Win32\lib']
-        includes = ['c:\OpenSSL-v111-Win32\include', 'scrypt-windows-stubs/include']
+        if os.path.isdir('c:\OpenSSL-Win32'):
+            openssl_dir = 'c:\OpenSSL-Win32'
+        else:
+            openssl_dir = 'c:\OpenSSL-v111-Win32'
+        library_dirs = [openssl_dir + '\lib']
+        includes = [openssl_dir + '\include', 'scrypt-windows-stubs/include']
+    if os.path.isfile(library_dirs[0] + '\libcrypto.lib'):
+        libraries = ['libcrypto', 'advapi32']
+    else:
+        libraries = ['libeay32', 'advapi32']
 
 elif sys.platform.startswith('darwin') and platform.mac_ver()[0] < '10.6':
     define_macros = [('HAVE_SYSCTL_HW_USERMEM', '1')]
@@ -86,7 +98,7 @@ scrypt_module = Extension(
     libraries=libraries)
 
 setup(name='scrypt',
-      version='0.8.7',
+      version='0.8.8',
       description='Bindings for the scrypt key derivation function library',
       author='Magnus Hallin',
       author_email='mhallin@gmail.com',
