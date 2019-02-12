@@ -32,7 +32,7 @@ elif sys.platform.startswith('win32'):
 
     extra_sources = ['scrypt-windows-stubs/gettimeofday.c']
     if struct.calcsize('P') == 8:
-        if os.path.isdir('c:\OpenSSL-v111-Win64') and sys.version_info[0] > 3 and sys.version_info[1] > 4:
+        if os.path.isdir('c:\OpenSSL-v111-Win64') and sys.version_info[0] >= 3 and sys.version_info[1] > 4:
             openssl_dir = 'c:\OpenSSL-v111-Win64'
         elif os.path.isdir('c:\Program Files\OpenSSL'):
             openssl_dir = 'c:\Program Files\OpenSSL'
@@ -49,12 +49,14 @@ elif sys.platform.startswith('win32'):
             openssl_dir = 'c:\OpenSSL-Win32'
         library_dirs = [openssl_dir + '\lib']
         includes = [openssl_dir + '\include', 'scrypt-windows-stubs/include']
-    if os.path.isfile(library_dirs[0] + '\libcrypto_static.lib'):
-        libraries = ['libcrypto_static', 'advapi32', 'user32', 'gdi32']
-    elif os.path.isfile(library_dirs[0] + '\libcrypto.lib'):
-        libraries = ['libcrypto', 'advapi32', 'user32', 'gdi32']	
+    windows_link_legacy_openssl = os.environ.get(
+        "SCRYPT_WINDOWS_LINK_LEGACY_OPENSSL", None
+    )
+    if  windows_link_legacy_openssl is None:
+        libraries = ['libcrypto_static']
     else:
-        libraries = ['libeay32', 'advapi32']
+        libraries = ['libeay32']
+    libraries += ["advapi32", "gdi32", "user32", "ws2_32"]
 
 elif sys.platform.startswith('darwin') and platform.mac_ver()[0] < '10.6':
     define_macros = [('HAVE_SYSCTL_HW_USERMEM', '1')]
@@ -104,7 +106,7 @@ scrypt_module = Extension(
     libraries=libraries)
 
 setup(name='scrypt',
-      version='0.8.11',
+      version='0.8.12',
       description='Bindings for the scrypt key derivation function library',
       author='Magnus Hallin',
       author_email='mhallin@gmail.com',

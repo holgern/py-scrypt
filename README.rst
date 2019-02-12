@@ -90,6 +90,11 @@ PyPy as well.
 
 Changelog
 =========
+0.8.12
+------
+
+* Add SCRYPT_WINDOWS_LINK_LEGACY_OPENSSL environment variable, when set, openssl 1.0.2 is linked
+
 0.8.11
 ------
 
