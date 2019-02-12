@@ -32,14 +32,14 @@ elif sys.platform.startswith('win32'):
 
     extra_sources = ['scrypt-windows-stubs/gettimeofday.c']
     if struct.calcsize('P') == 8:
-        if os.path.isdir('c:\OpenSSL-Win64') and sys.version_info[0] > 3 and sys.version_info[1] > 4:
+        if os.path.isdir('c:\OpenSSL-v111-Win64') and sys.version_info[0] > 3 and sys.version_info[1] > 4:
             openssl_dir = 'c:\OpenSSL-v111-Win64'
         else:
             openssl_dir = 'c:\OpenSSL-Win64'
         library_dirs = [openssl_dir + '\lib']
         includes = [openssl_dir + '\include', 'scrypt-windows-stubs/include']
     else:
-        if os.path.isdir('c:\OpenSSL-Win32'):
+        if os.path.isdir('c:\OpenSSL-v111-Win32'):
             openssl_dir = 'c:\OpenSSL-v111-Win32'
         else:
             openssl_dir = 'c:\OpenSSL-Win32'
