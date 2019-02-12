@@ -90,6 +90,11 @@ PyPy as well.
 
 Changelog
 =========
+0.8.11
+------
+
+* fix build for conda feedstock
+
 0.8.10
 ------
 
