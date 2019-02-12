@@ -46,7 +46,7 @@ elif sys.platform.startswith('win32'):
         library_dirs = [openssl_dir + '\lib']
         includes = [openssl_dir + '\include', 'scrypt-windows-stubs/include']
     if os.path.isfile(library_dirs[0] + '\libcrypto.lib'):
-        libraries = ['libcrypto_static', 'advapi32']
+        libraries = ['libcrypto_static', 'advapi32', 'user32', 'gdi32']
     else:
         libraries = ['libeay32', 'advapi32']
 
