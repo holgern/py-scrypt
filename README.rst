@@ -90,6 +90,11 @@ PyPy as well.
 
 Changelog
 =========
+0.8.10
+------
+
+* fix typo
+
 0.8.9
 -----
 
