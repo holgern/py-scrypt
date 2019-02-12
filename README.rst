@@ -90,6 +90,11 @@ PyPy as well.
 
 Changelog
 =========
+0.8.13
+------
+
+* improve build for conda forge
+
 0.8.12
 ------
 

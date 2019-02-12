@@ -34,8 +34,6 @@ elif sys.platform.startswith('win32'):
     if struct.calcsize('P') == 8:
         if os.path.isdir('c:\OpenSSL-v111-Win64') and sys.version_info[0] >= 3 and sys.version_info[1] > 4:
             openssl_dir = 'c:\OpenSSL-v111-Win64'
-        elif os.path.isdir('c:\Program Files\OpenSSL'):
-            openssl_dir = 'c:\Program Files\OpenSSL'
         else:
             openssl_dir = 'c:\OpenSSL-Win64'
         library_dirs = [openssl_dir + '\lib']
@@ -43,8 +41,6 @@ elif sys.platform.startswith('win32'):
     else:
         if os.path.isdir('c:\OpenSSL-v111-Win32'):
             openssl_dir = 'c:\OpenSSL-v111-Win32'
-        elif os.path.isdir('c:\Program Files\OpenSSL'):
-            openssl_dir = 'c:\Program Files\OpenSSL'
         else:
             openssl_dir = 'c:\OpenSSL-Win32'
         library_dirs = [openssl_dir + '\lib']
@@ -106,7 +102,7 @@ scrypt_module = Extension(
     libraries=libraries)
 
 setup(name='scrypt',
-      version='0.8.12',
+      version='0.8.13',
       description='Bindings for the scrypt key derivation function library',
       author='Magnus Hallin',
       author_email='mhallin@gmail.com',
