@@ -33,20 +33,20 @@ elif sys.platform.startswith('win32'):
     extra_sources = ['scrypt-windows-stubs/gettimeofday.c']
     if struct.calcsize('P') == 8:
         if os.path.isdir('c:\OpenSSL-Win64'):
-            openssl_dir = 'c:\OpenSSL-Win64'
-        else:
             openssl_dir = 'c:\OpenSSL-v111-Win64'
+        else:
+            openssl_dir = 'c:\OpenSSL-Win64'
         library_dirs = [openssl_dir + '\lib']
         includes = [openssl_dir + '\include', 'scrypt-windows-stubs/include']
     else:
         if os.path.isdir('c:\OpenSSL-Win32'):
-            openssl_dir = 'c:\OpenSSL-Win32'
-        else:
             openssl_dir = 'c:\OpenSSL-v111-Win32'
+        else:
+            openssl_dir = 'c:\OpenSSL-Win32'
         library_dirs = [openssl_dir + '\lib']
         includes = [openssl_dir + '\include', 'scrypt-windows-stubs/include']
     if os.path.isfile(library_dirs[0] + '\libcrypto.lib'):
-        libraries = ['libcrypto', 'advapi32']
+        libraries = ['libcrypto_static', 'advapi32']
     else:
         libraries = ['libeay32', 'advapi32']
 
@@ -98,7 +98,7 @@ scrypt_module = Extension(
     libraries=libraries)
 
 setup(name='scrypt',
-      version='0.8.8',
+      version='0.8.9',
       description='Bindings for the scrypt key derivation function library',
       author='Magnus Hallin',
       author_email='mhallin@gmail.com',

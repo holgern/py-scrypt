@@ -90,6 +90,11 @@ PyPy as well.
 
 Changelog
 =========
+0.8.9
+-----
+
+* use the static libcrypto_static for windows and openssl 1.1.1
+
 0.8.8
 -----
 
