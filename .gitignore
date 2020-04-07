@@ -89,3 +89,7 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# wing
+*.wpr
+*.wpu

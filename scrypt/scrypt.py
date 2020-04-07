@@ -10,7 +10,7 @@ from ctypes import (cdll,
                     c_size_t, c_double, c_int, c_uint64, c_uint32,
                     create_string_buffer)
 
-__version__ = '0.8.13'
+__version__ = '0.8.14'
 
 _scrypt = cdll.LoadLibrary(imp.find_module('_scrypt')[1])
 
