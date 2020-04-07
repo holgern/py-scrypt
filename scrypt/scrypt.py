@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import imp
 import os
 import sys
-
+IS_PY2 = sys.version_info < (3, 0, 0, 'final', 0)
 from ctypes import (cdll,
                     POINTER, pointer,
                     c_char_p,
@@ -12,7 +11,12 @@ from ctypes import (cdll,
 
 __version__ = '0.8.14'
 
-_scrypt = cdll.LoadLibrary(imp.find_module('_scrypt')[1])
+if IS_PY2:
+    import imp
+    _scrypt = cdll.LoadLibrary(imp.find_module('_scrypt')[1])
+else:
+    import importlib
+    _scrypt = cdll.LoadLibrary(importlib.util.find_spec('_scrypt').origin)
 
 _scryptenc_buf = _scrypt.exp_scryptenc_buf
 _scryptenc_buf.argtypes = [c_char_p,  # const uint_t  *inbuf
@@ -74,8 +78,6 @@ MAXMEM_DEFAULT = 0
 MAXMEMFRAC_DEFAULT = 0.5
 MAXTIME_DEFAULT = 300.0
 MAXTIME_DEFAULT_ENC = 5.0
-
-IS_PY2 = sys.version_info < (3, 0, 0, 'final', 0)
 
 
 class error(Exception):
