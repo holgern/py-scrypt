@@ -87,6 +87,8 @@ ENV/
 # mkdocs documentation
 /site
 
+/build
+
 # mypy
 .mypy_cache/
 

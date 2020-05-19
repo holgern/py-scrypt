@@ -124,4 +124,4 @@ setup(name='scrypt',
                    'Topic :: Software Development :: Libraries'],
       license='2-clause BSD',
       long_description=open('README.rst').read(),
-      test_suite='tests.all_tests')
+      test_suite='scrypt.tests.all_tests')
