@@ -109,13 +109,16 @@ before_install:
   - ulimit -a
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source util/travis_osx_install.sh; fi
   - ccache -s
-  - if [[ "$MANYLINUX" == "0" ]]; then which python; python --version; fi
-  - if [[ "$MANYLINUX" == "0" ]]; then which pip install --upgrade pip; fi
-  - if [[ "$MANYLINUX" == "0" ]]; then which pip install --upgrade wheel; fi
-  - if [[ "$MANYLINUX" == "0" ]]; then which mkdir ${TRAVIS_BUILD_DIR}/wheelhouse; fi
-  - if [[ "$MANYLINUX" == "0"]]; then pip install --upgrade auditwheel; fi
-  - if [[ "$MANYLINUX" == "1" ]]; then docker pull $DOCKER_IMAGE; fi
-  - 
+  - |
+    if [ "${MANYLINUX}" == "0" ]; then
+        which python; python --version
+        pip install --upgrade pip
+        pip install --upgrade wheel
+        mkdir ${TRAVIS_BUILD_DIR}/wheelhouse
+        pip install --upgrade auditwheel
+    else
+        docker pull $DOCKER_IMAGE
+    fi
   # Set numpy version first, other packages link against it
   #- pip install Cython matplotlib nose coverage codecov futures
   - set -o pipefail
