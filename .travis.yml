@@ -28,18 +28,20 @@ matrix:
       env:
         - PYFLAKES=1
         - PEP8=1
+        - MANYLINUX=0
       before_install:
         - pip install pep8==1.6.2
         - pip install pyflakes
       script:
         - PYFLAKES_NODOCTEST=1 pyflakes scrypt.py | grep -E -v 'unable to detect undefined names|assigned to but never used|imported but unused|redefinition of unused' > test.out; cat test.out; test \! -s test.out
-        - pep8 tests scrypt
+        - pep8 scrypt
     - os: linux
       python: 2.7
       env:
         - USE_WHEEL=1
         - LINUX_WHEEL=1
         - TOXENV=py27
+        - MANYLINUX=0
 #      addons:
 #        apt:
 #          packages:
@@ -50,6 +52,7 @@ matrix:
         - USE_WHEEL=1
         - LINUX_WHEEL=1
         - TOXENV=py35
+        - MANYLINUX=0
 #      addons:
 #        apt:
 #          packages:
@@ -58,12 +61,14 @@ matrix:
       python: 3.6
       env:
         - TOXENV=py36
+        - MANYLINUX=0
     - os: linux
       python: 3.6
       env:
         - USE_WHEEL=1
         - LINUX_WHEEL=1
         - TOXENV=py36
+        - MANYLINUX=0
 #      addons:
 #        apt:
 #          packages:
@@ -73,6 +78,7 @@ matrix:
       env:
         - USE_SDIST=1
         - TOXENV=py36
+        - MANYLINUX=0
     - os: osx
       osx_image: xcode7.3
       language: objective-c
@@ -80,6 +86,7 @@ matrix:
         - USE_WHEEL=1
         - TRAVIS_PYTHON_VERSION=2.7
         - MAC_WHEEL=1
+        - MANYLINUX=0
         - TOXENV=py27
         - SCRYPT_SUPPRESS_LINK_FLAGS=1
     - os: osx
@@ -89,6 +96,7 @@ matrix:
         - USE_WHEEL=1
         - TRAVIS_PYTHON_VERSION=3.5
         - MAC_WHEEL=1
+        - MANYLINUX=0
         - TOXENV=py35
         - SCRYPT_SUPPRESS_LINK_FLAGS=1
     - os: osx
@@ -98,6 +106,7 @@ matrix:
         - USE_WHEEL=1
         - TRAVIS_PYTHON_VERSION=3.6
         - MAC_WHEEL=1
+        - MANYLINUX=0
         - TOXENV=py36
         - SCRYPT_SUPPRESS_LINK_FLAGS=1
 
