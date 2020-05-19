@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-IS_PY2 = sys.version_info < (3, 0, 0, 'final', 0)
-if IS_PY2:
+if sys.version_info < (3, 0, 0, 'final', 0):
     import imp
     _scrypt = cdll.LoadLibrary(imp.find_module('_scrypt')[1])
 else:
