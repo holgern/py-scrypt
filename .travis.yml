@@ -153,7 +153,9 @@ script:
 #       auditwheel repair scrypt*.whl
 #    fi
   - |
-    if [ "${USE_WHEEL}" == "1" ]; then
+    if [ "${MANYLINUX}" == "1" ]; then
+        docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build-wheels.sh
+    elif [ "${USE_WHEEL}" == "1" ]; then
         # Need verbose output or TravisCI will terminate after 10 minutes
         #pip wheel . -v
         cp *.whl ${TRAVIS_BUILD_DIR}/wheelhouse/
@@ -166,8 +168,6 @@ script:
         pip install scrypt* -v
         popd
         python setup.py test
-    elif [ "${MANYLINUX}" == "1" ]; then
-        docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build-wheels.sh
     else
         #CFLAGS="--coverage" python setup.py build --build-lib build/lib/ --build-temp build/tmp/
         python setup.py build
