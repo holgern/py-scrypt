@@ -56,12 +56,12 @@ elif sys.platform.startswith('win32'):
 
 elif sys.platform.startswith('darwin') and platform.mac_ver()[0] < '10.6':
     define_macros = [('HAVE_SYSCTL_HW_USERMEM', '1')]
-	# disable for travis
+        # disable for travis
     libraries = ['crypto']
 elif sys.platform.startswith('darwin'):
     define_macros = [('HAVE_POSIX_MEMALIGN', '1'),
                      ('HAVE_SYSCTL_HW_USERMEM', '1')]
-	# disable for travis
+        # disable for travis
     libraries = ['crypto']
 else:
     define_macros = [('HAVE_POSIX_MEMALIGN', '1'),
@@ -119,6 +119,7 @@ setup(name='scrypt',
                    'Programming Language :: Python :: 3.5',
                    'Programming Language :: Python :: 3.6',
                    'Programming Language :: Python :: 3.7',
+                   'Programming Language :: Python :: 3.8',
                    'Topic :: Security :: Cryptography',
                    'Topic :: Software Development :: Libraries'],
       license='2-clause BSD',
