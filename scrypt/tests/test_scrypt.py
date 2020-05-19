@@ -269,5 +269,6 @@ class TestScryptHash(testm.TestCase):
         self.assertRaises(scrypt.error,
                           lambda: scrypt.hash(self.input, self.salt, N=-1))
 
+
 if __name__ == "__main__":
     testm.main()

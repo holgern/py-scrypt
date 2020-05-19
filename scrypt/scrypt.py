@@ -2,17 +2,17 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+from ctypes import (cdll,
+                    POINTER, pointer,
+                    c_char_p,
+                    c_size_t, c_double, c_int, c_uint64, c_uint32,
+                    create_string_buffer)
 if sys.version_info < (3, 0, 0, 'final', 0):
     import imp
     _scrypt = cdll.LoadLibrary(imp.find_module('_scrypt')[1])
 else:
     import importlib
     _scrypt = cdll.LoadLibrary(importlib.util.find_spec('_scrypt').origin)
-from ctypes import (cdll,
-                    POINTER, pointer,
-                    c_char_p,
-                    c_size_t, c_double, c_int, c_uint64, c_uint32,
-                    create_string_buffer)
 
 __version__ = '0.8.14'
 

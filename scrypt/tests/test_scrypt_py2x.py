@@ -37,5 +37,6 @@ class TestScryptForPython2(testm.TestCase):
         h = scrypt.hash(self.input, self.password)
         self.assertTrue(isinstance(h, str))
 
+
 if __name__ == "__main__":
     testm.main()
