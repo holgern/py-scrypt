@@ -7,6 +7,25 @@ dist: trusty
 
 matrix:
   include:
+      - sudo: required
+      services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
+           PLAT=manylinux1_x86_64
+           MANYLINUX=1
+    - sudo: required
+      services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
+           PRE_CMD=linux32
+           PLAT=manylinux1_i686
+           MANYLINUX=1
+    - sudo: required
+      services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64
+           PLAT=manylinux2010_x86_64
+           MANYLINUX=1
     - os: linux
       python: 2.7
       env:
@@ -93,11 +112,13 @@ before_install:
   - ulimit -a
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source util/travis_osx_install.sh; fi
   - ccache -s
-  - which python; python --version
-  - pip install --upgrade pip
-  - pip install --upgrade wheel
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then pip install --upgrade auditwheel; fi
-  - mkdir ${TRAVIS_BUILD_DIR}/wheelhouse
+  - if [[ "$MANYLINUX" == "0" ]]; then which python; python --version; fi
+  - if [[ "$MANYLINUX" == "0" ]]; then which pip install --upgrade pip; fi
+  - if [[ "$MANYLINUX" == "0" ]]; then which pip install --upgrade wheel; fi
+  - if [[ "$MANYLINUX" == "0" ]]; then which mkdir ${TRAVIS_BUILD_DIR}/wheelhouse; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$MANYLINUX" == "0"]]; then pip install --upgrade auditwheel; fi
+  - if [[ "$MANYLINUX" == "1" ]]; then docker pull $DOCKER_IMAGE; fi
+  - 
   # Set numpy version first, other packages link against it
   #- pip install Cython matplotlib nose coverage codecov futures
   - set -o pipefail
@@ -136,6 +157,8 @@ script:
         pip install scrypt* -v
         popd
         python setup.py test
+    elif [ "${MANYLINUX}" == "1" ]; then
+        docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build-wheels.sh
     else
         #CFLAGS="--coverage" python setup.py build --build-lib build/lib/ --build-temp build/tmp/
         python setup.py build

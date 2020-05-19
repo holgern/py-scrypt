@@ -7,17 +7,7 @@ from csv import reader
 from binascii import a2b_hex, b2a_hex
 
 import scrypt
-
-if ((version_info > (3, 2, 0, 'final', 0)) or
-        (version_info > (2, 7, 0, 'final', 0) and
-         version_info < (3, 0, 0, 'final', 0))):
-    import unittest as testm
-else:
-    try:
-        import unittest2 as testm
-    except ImportError:
-        print("Please install unittest2 to run the test suite")
-        exit(-1)
+import unittest as testm
 
 
 class TestScrypt(testm.TestCase):
