@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from sys import version_info, exit
-
 import scrypt
 import unittest as testm
+
 
 @testm.skipIf(version_info < (3, 0, 0, 'final', 0), "Tests for Python 3 only")
 class TestScryptForPy3(testm.TestCase):

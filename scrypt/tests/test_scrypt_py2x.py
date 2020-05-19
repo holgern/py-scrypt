@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from sys import version_info, exit
-
 import scrypt
 import unittest as testm
 

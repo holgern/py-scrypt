@@ -5,7 +5,6 @@ from os.path import dirname, abspath, sep
 from sys import version_info, exit
 from csv import reader
 from binascii import a2b_hex, b2a_hex
-
 import scrypt
 import unittest as testm
 
