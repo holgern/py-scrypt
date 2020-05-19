@@ -96,3 +96,17 @@ after_test:
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
   - path: dist\*
+
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: 0/vpfUG++7riJDu6Zc0smoTJJJm1t9/qiOzY/IR5vtaFNZNVYmRbEt8jS8LxpnFW
+  artifact: dist\*
+  draft: true
+  prerelease: true
+  description: "Python Wheels for py-scrypt"
+  tag: $(APPVEYOR_REPO_TAG_NAME) # will not work until tag is pushed
+  on:
+#    configuration: Release    # Debug contains non-redist MS DLLs
+    APPVEYOR_REPO_TAG: true   # deploy on tag push only
+    branch: master   # release from master branch only
