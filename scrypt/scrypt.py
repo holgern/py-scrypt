@@ -3,6 +3,12 @@
 import os
 import sys
 IS_PY2 = sys.version_info < (3, 0, 0, 'final', 0)
+if IS_PY2:
+    import imp
+    _scrypt = cdll.LoadLibrary(imp.find_module('_scrypt')[1])
+else:
+    import importlib
+    _scrypt = cdll.LoadLibrary(importlib.util.find_spec('_scrypt').origin)
 from ctypes import (cdll,
                     POINTER, pointer,
                     c_char_p,
@@ -10,13 +16,6 @@ from ctypes import (cdll,
                     create_string_buffer)
 
 __version__ = '0.8.14'
-
-if IS_PY2:
-    import imp
-    _scrypt = cdll.LoadLibrary(imp.find_module('_scrypt')[1])
-else:
-    import importlib
-    _scrypt = cdll.LoadLibrary(importlib.util.find_spec('_scrypt').origin)
 
 _scryptenc_buf = _scrypt.exp_scryptenc_buf
 _scryptenc_buf.argtypes = [c_char_p,  # const uint_t  *inbuf
