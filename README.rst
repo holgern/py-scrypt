@@ -19,6 +19,8 @@ function.
 .. image:: https://ci.appveyor.com/api/projects/status/h644bjbdawke9vf2?svg=true 
     :target: https://ci.appveyor.com/api/projects/status/h644bjbdawke9vf2
 
+.. image:: https://travis-ci.org/holgern/py-scrypt.svg?branch=master
+    :target: https://travis-ci.org/holgern/py-scrypt
 
 Scrypt is useful when encrypting password as it is possible to specify
 a *minimum* amount of time to use when encrypting and decrypting. If,
