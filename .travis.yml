@@ -47,17 +47,6 @@ matrix:
 #          packages:
 #            - patchelf
     - os: linux
-      python: 3.5
-      env:
-        - USE_WHEEL=1
-        - LINUX_WHEEL=1
-        - TOXENV=py35
-        - MANYLINUX=0
-#      addons:
-#        apt:
-#          packages:
-#            - patchelf
-    - os: linux
       python: 3.6
       env:
         - TOXENV=py36
@@ -90,7 +79,17 @@ matrix:
         - TOXENV=py35
         - SCRYPT_SUPPRESS_LINK_FLAGS=1
     - os: osx
-      osx_image: xcode7.3
+      osx_image: xcode9.4
+      language: objective-c
+      env:
+        - USE_WHEEL=1
+        - TRAVIS_PYTHON_VERSION=3.6
+        - MAC_WHEEL=1
+        - MANYLINUX=0
+        - TOXENV=py36
+        - SCRYPT_SUPPRESS_LINK_FLAGS=1
+    - os: osx
+      osx_image: xcode10.2
       language: objective-c
       env:
         - USE_WHEEL=1
@@ -98,16 +97,6 @@ matrix:
         - MAC_WHEEL=1
         - MANYLINUX=0
         - TOXENV=py37
-        - SCRYPT_SUPPRESS_LINK_FLAGS=1
-    - os: osx
-      osx_image: xcode7.3
-      language: objective-c
-      env:
-        - USE_WHEEL=1
-        - TRAVIS_PYTHON_VERSION=3.8
-        - MAC_WHEEL=1
-        - MANYLINUX=0
-        - TOXENV=py38
         - SCRYPT_SUPPRESS_LINK_FLAGS=1
 
 cache: pip
