@@ -28,5 +28,5 @@ done
 # Install packages and test
 for PYBIN in /opt/python/*/bin/; do
     "${PYBIN}/pip" install scrypt --no-index -f /io/wheelhouse
-    (cd "$HOME"; "${PYBIN}/nosetests" scrypt)
+    (cd "$HOME"; "${PYBIN}/pytest" --pyargs scrypt)
 done

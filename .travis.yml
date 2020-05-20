@@ -149,25 +149,27 @@ script:
         #pip wheel . -v
         cp *.whl ${TRAVIS_BUILD_DIR}/wheelhouse/
         pip install scrypt*.whl -v
-        python setup.py test
+        pytest
     elif [ "${USE_SDIST}" == "1" ]; then
         python setup.py sdist
         # Move out of source directory to avoid finding local scrypt
         pushd dist
         pip install scrypt* -v
         popd
-        python setup.py test
+        pytest
     else
         #CFLAGS="--coverage" python setup.py build --build-lib build/lib/ --build-temp build/tmp/
         python setup.py build
-        python setup.py test
+        pytest
     fi
 
 deploy:
   provider: releases
-  api-key: ${GITHUB_OAUTH}
+  api-key:
+    secure: "SY6OxiJBung1ZdZZSjMu62TZzi9wZsPgTNf3Fut7RutddkKxnVYH1G1am/sylXM6T2Mc+IIfJDRsmJqFX9l5e3NLA/qEKAksZVEnL+OvZJ7eiGzedODyJdiejNTlOMcNkQ9waAJjNrm2zIk22ZnXxo2ANLvm67U4Lq/d83QKHdhEz5PGW50rQ4PrKP0khxrPXVBQKouz35FY3rFk5Yz7Im1CL+2ZPeAc/DfhnW8Oo1zMUGxxdv7LBpc8CdOgW6OfFDLADaY7ik7aGiBezmwuhvQrmAbv7OGuKmGYE8sa+Y1dR02o2MgwD3s+V3YwRHJGJJ5INyM+Th665rT/njWjBAAbC2J6IG0b8GM78W1UqruXh4okTRTpiT8uYY7iM2f8y1YfDVv9zK3MJ2SoJNslHkEfLSkCmpOFIoiQPDw42/Bx7pc5OVIvJE6jbHnBU+k8ob8F8y+lSfGmN+HqVMSyB2IQ/U6p2nhN8jHvydMGOdSJSl/WTH+N3FxWYa7H06o6qBXqt2kivlz3mtjR0S7SDUH/n0mAliJS19uXsNVAQWhowY4RC4/u8PTpcSCF/ObWTq2t6sRlzjUrJDx1eo7YHcl/6LITvlHH5svpg75MzgdNFfw1OC03ot1OXTORz9Yajw6Gl2Dv2gY0V2IeemDLTNSwSk+L74ltZn0FntWtGGE="
   file_glob: true
   file: ${TRAVIS_BUILD_DIR}/wheelhouse/*
   skip_cleanup: true
+  draft: true
   on:
     tags: true
