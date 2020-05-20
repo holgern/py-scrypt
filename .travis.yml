@@ -160,7 +160,7 @@ script:
     else
         #CFLAGS="--coverage" python setup.py build --build-lib build/lib/ --build-temp build/tmp/
         python setup.py build
-        pytest
+        python setup.py test
     fi
 
 deploy:
