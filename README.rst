@@ -66,7 +66,7 @@ It needs to be installed to C:\OpenSSL-Win64.
 You can install py-scrypt from this repository if you want the latest
 but possibly non-compiling version::
 
-    $ hg clone http://bitbucket.org/mhallin/py-scrypt
+    $ git clone https://github.com/holgern/py-scrypt.git
     $ cd py-scrypt
     $ python setup.py build
 
