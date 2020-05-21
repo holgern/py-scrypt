@@ -149,14 +149,14 @@ script:
         #pip wheel . -v
         cp *.whl ${TRAVIS_BUILD_DIR}/wheelhouse/
         pip install scrypt*.whl -v
-        pytest
+        python setup.py test
     elif [ "${USE_SDIST}" == "1" ]; then
         python setup.py sdist
         # Move out of source directory to avoid finding local scrypt
         pushd dist
         pip install scrypt* -v
         popd
-        pytest
+        python setup.py test
     else
         #CFLAGS="--coverage" python setup.py build --build-lib build/lib/ --build-temp build/tmp/
         python setup.py build
