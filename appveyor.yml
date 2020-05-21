@@ -105,8 +105,8 @@ deploy:
   artifact: dist\*
   draft: true
   prerelease: true
-  description: "Python Wheels for py-scrypt"
-  tag: $(APPVEYOR_REPO_TAG_NAME) # will not work until tag is pushed
+  # description: "Python Wheels for py-scrypt"
+  # tag: $(APPVEYOR_REPO_TAG_NAME) # will not work until tag is pushed
   on:
 #    configuration: Release    # Debug contains non-redist MS DLLs
     APPVEYOR_REPO_TAG: true   # deploy on tag push only
