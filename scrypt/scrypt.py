@@ -13,9 +13,10 @@ if IS_PY2:
     _scrypt = cdll.LoadLibrary(imp.find_module('_scrypt')[1])
 else:
     import importlib
+    import importlib.util
     _scrypt = cdll.LoadLibrary(importlib.util.find_spec('_scrypt').origin)
 
-__version__ = '0.8.14'
+__version__ = '0.8.15'
 
 _scryptenc_buf = _scrypt.exp_scryptenc_buf
 _scryptenc_buf.argtypes = [c_char_p,  # const uint_t  *inbuf

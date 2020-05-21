@@ -96,6 +96,19 @@ PyPy as well.
 
 Changelog
 =========
+
+0.8.15
+------
+
+* Fix missing import
+
+
+0.8.14
+------
+
+* fix imp deprecation warning
+
+
 0.8.13
 ------
 
