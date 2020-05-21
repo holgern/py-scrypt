@@ -17,7 +17,7 @@ function.
 
 
 .. image:: https://ci.appveyor.com/api/projects/status/h644bjbdawke9vf2?svg=true 
-    :target: https://ci.appveyor.com/api/projects/status/h644bjbdawke9vf2
+    :target: https://ci.appveyor.com/project/holger80/py-scrypt
 
 .. image:: https://travis-ci.org/holgern/py-scrypt.svg?branch=master
     :target: https://travis-ci.org/holgern/py-scrypt

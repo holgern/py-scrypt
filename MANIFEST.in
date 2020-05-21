@@ -8,13 +8,13 @@ include MANIFEST.in
 
 include scrypt/__init__.py
 include scrypt/scrypt.py
-include tests/__init__.py
-include tests/ciphertexts.csv
-include tests/hashvectors.csv
-include tests/test_scrypt_c_module.py
-include tests/test_scrypt.py
-include tests/test_scrypt_py2x.py
-include tests/test_scrypt_py3x.py
+include scrypt/tests/__init__.py
+include scrypt/tests/ciphertexts.csv
+include scrypt/tests/hashvectors.csv
+include scrypt/tests/test_scrypt_c_module.py
+include scrypt/tests/test_scrypt.py
+include scrypt/tests/test_scrypt_py2x.py
+include scrypt/tests/test_scrypt_py3x.py
 
 # Exclude what we don't want to include
 prune build
