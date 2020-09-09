@@ -96,6 +96,9 @@ PyPy as well.
 
 Changelog
 =========
+0.8.16
+------
+* Add additional test vector from RFC (thanks to @ChrisMacNaughton)
 
 0.8.15
 ------
