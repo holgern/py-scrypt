@@ -16,9 +16,9 @@ else:
         lib_path = os.path.join(os.path.normpath(sys.prefix), 'Library', 'bin')
         build_dir = os.path.join(os.path.dirname(__file__), '../')
         if os.path.exists(lib_path):
-            os.add_dll_directory()
+            os.add_dll_directory(lib_path)
         if os.path.exists(build_dir):
-            os.add_dll_directory()
+            os.add_dll_directory(build_dir)
     import importlib
     import importlib.util
     _scrypt = cdll.LoadLibrary(importlib.util.find_spec('_scrypt').origin)
