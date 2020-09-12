@@ -13,8 +13,12 @@ if IS_PY2:
     _scrypt = cdll.LoadLibrary(imp.find_module('_scrypt')[1])
 else:
     if sys.version_info >= (3, 8) and sys.platform == 'win32':
-        os.add_dll_directory(os.path.join(os.path.normpath(sys.prefix), 'Library', 'bin'))
-        os.add_dll_directory(os.path.join(os.path.dirname(__file__), '../'))
+        lib_path = os.path.join(os.path.normpath(sys.prefix), 'Library', 'bin')
+        build_dir = os.path.join(os.path.dirname(__file__), '../')
+        if os.path.exists(lib_path):
+            os.add_dll_directory()
+        if os.path.exists(build_dir):
+            os.add_dll_directory()
     import importlib
     import importlib.util
     _scrypt = cdll.LoadLibrary(importlib.util.find_spec('_scrypt').origin)
