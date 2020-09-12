@@ -96,6 +96,10 @@ PyPy as well.
 
 Changelog
 =========
+0.8.17
+------
+* add_dll_directory for python 3.8 on windows, as importlib.util.find_spec does not search all paths anymore 
+ 
 0.8.16
 ------
 * Add additional test vector from RFC (thanks to @ChrisMacNaughton)
