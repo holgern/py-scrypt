@@ -23,6 +23,15 @@ matrix:
       env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64
            PLAT=manylinux2010_x86_64
            MANYLINUX=1
+    - sudo: required
+      arch: arm64-graviton2
+      group: edge
+      virt: lxd
+      services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_aarch64
+           PLAT=manylinux2014_aarch64
+           MANYLINUX=1
     - os: linux
       python: 2.7
       env:
