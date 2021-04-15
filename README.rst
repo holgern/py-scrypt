@@ -19,8 +19,8 @@ function.
 .. image:: https://ci.appveyor.com/api/projects/status/h644bjbdawke9vf2?svg=true 
     :target: https://ci.appveyor.com/project/holger80/py-scrypt
 
-.. image:: https://travis-ci.org/holgern/py-scrypt.svg?branch=master
-    :target: https://travis-ci.org/holgern/py-scrypt
+.. image:: https://www.travis-ci.com/holgern/py-scrypt.svg?branch=master
+    :target: https://www.travis-ci.com/holgern/py-scrypt
 
 Scrypt is useful when encrypting password as it is possible to specify
 a *minimum* amount of time to use when encrypting and decrypting. If,
@@ -96,12 +96,19 @@ PyPy as well.
 
 Changelog
 =========
+
+0.8.18
+------
+* add wheel for python 3.9 and 
+
 0.8.17
 ------
+
 * add_dll_directory for python 3.8 on windows, as importlib.util.find_spec does not search all paths anymore 
  
 0.8.16
 ------
+
 * Add additional test vector from RFC (thanks to @ChrisMacNaughton)
 
 0.8.15
