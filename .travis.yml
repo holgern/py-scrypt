@@ -97,7 +97,7 @@ matrix:
         - TOXENV=py38
         - SCRYPT_SUPPRESS_LINK_FLAGS=1
     - os: osx
-      osx_image: xcode10.2
+      osx_image: xcode11.6
       language: objective-c
       env:
         - USE_WHEEL=1

@@ -14,6 +14,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+dist/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -24,6 +25,7 @@ wheels/
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+
 
 # Unit test / coverage reports
 htmlcov/
