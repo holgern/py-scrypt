@@ -34,7 +34,7 @@ elif sys.platform.startswith('win32'):
     if struct.calcsize('P') == 8:
         if os.path.isdir('c:\OpenSSL-v111-Win64') and sys.version_info[0] >= 3 and sys.version_info[1] > 4:
             openssl_dir = 'c:\OpenSSL-v111-Win64'
-        elif os.path.isdir('c:\Program Files\OpenSSL-Win64')
+        elif os.path.isdir('c:\Program Files\OpenSSL-Win64'):
             openssl_dir = 'c:\Program Files\OpenSSL-Win64'
         else:
             openssl_dir = 'c:\OpenSSL-Win64'
@@ -43,7 +43,7 @@ elif sys.platform.startswith('win32'):
     else:
         if os.path.isdir('c:\OpenSSL-v111-Win32'):
             openssl_dir = 'c:\OpenSSL-v111-Win32'
-        elif os.path.isdir('c:\Program Files\OpenSSL-Win32')
+        elif os.path.isdir('c:\Program Files\OpenSSL-Win32'):
             openssl_dir = 'c:\Program Files\OpenSSL-Win32'
         else:
             openssl_dir = 'c:\OpenSSL-Win32'
