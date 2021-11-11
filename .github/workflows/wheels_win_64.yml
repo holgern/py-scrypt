@@ -8,11 +8,8 @@ env:
 jobs:
       
   build_wheels_for_win:
-    name: Build wheels on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+    name: Build wheels on Win64
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
 
