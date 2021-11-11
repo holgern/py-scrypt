@@ -43,8 +43,8 @@ elif sys.platform.startswith('win32'):
     else:
         if os.path.isdir('c:\OpenSSL-v111-Win32'):
             openssl_dir = 'c:\OpenSSL-v111-Win32'
-        elif os.path.isdir('c:\Program Files\OpenSSL-Win32'):
-            openssl_dir = 'c:\Program Files\OpenSSL-Win32'
+        elif os.path.isdir('c:\Program Files (x86)\OpenSSL-Win32'):
+            openssl_dir = 'c:\Program Files (x86)\OpenSSL-Win32'
         else:
             openssl_dir = 'c:\OpenSSL-Win32'
         library_dirs = [openssl_dir + '\lib']
