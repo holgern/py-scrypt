@@ -4,8 +4,8 @@ env:
   CIBW_BUILD_VERBOSITY: 1
   CIBW_ARCHS: "auto32"
   # Run the package tests using `pytest`
-  # CIBW_TEST_REQUIRES: pytest
-  # CIBW_TEST_COMMAND: python setup.py test
+  CIBW_TEST_REQUIRES: pytest
+  CIBW_TEST_COMMAND: python setup.py test
 jobs:
       
   build_wheels_for_win:
