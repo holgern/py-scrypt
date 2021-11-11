@@ -1,0 +1,114 @@
+name: Build wheel on win64
+on: [push]
+env:
+  CIBW_BUILD_VERBOSITY: 1
+  # Run the package tests using `pytest`
+  # CIBW_TEST_REQUIRES: pytest
+  # CIBW_TEST_COMMAND: python setup.py test
+jobs:
+      
+  build_wheels_for_win:
+    name: Build wheels on Windows x64
+    runs-on: windows-latest
+    env:
+      BUILD_WHEELS: "true"
+      GLOBAL_CACHE_KEY: "64_1"
+      WEBRTC_CACHE_KEY: "64_1"
+
+    defaults:
+      run:
+        shell: cmd
+        working-directory: Libraries\win64
+
+    steps:
+       - name: Get repository name.
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: echo "REPO_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
+
+      - uses: ilammy/msvc-dev-cmd@v1.9.0
+        name: x64 Native Tools Command Prompt.
+        with:
+          arch: win64
+
+      - name: Set up environment paths.
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: |
+          echo "C:\\Strawberry\\perl\\bin\\" >> $GITHUB_PATH
+          echo "C:\\Program Files\\NASM\\" >> $GITHUB_PATH
+          echo "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\VC\\Auxiliary\\Build\\" >> $GITHUB_PATH
+          mkdir Libraries && cd Libraries
+          mkdir win64 && cd win64
+          echo "Convert unix path to win path."
+          p=`pwd | sed 's#^/[d]#d:#g' |sed 's#/#\\\\#g'`
+          echo "LibrariesPath=$p" >> $GITHUB_ENV
+
+      - name: Clone.
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          path: ${{ env.REPO_NAME }}
+
+      - name: Generate cache key.
+        shell: bash
+        run: |
+          echo $GLOBAL_CACHE_KEY >> CACHE_KEY.txt
+          echo "$GITHUB_WORKSPACE" >> CACHE_KEY.txt
+          echo "CACHE_KEY=`md5sum CACHE_KEY.txt | awk '{ print $1 }'`" >> $GITHUB_ENV
+
+      - name: Choco installs.
+        run: |
+          choco install --allow-empty-checksums --no-progress -y yasm
+          choco install --no-progress -y nasm jom ninja
+      - name: NuGet sources.
+        run: |
+          nuget sources Disable -Name "Microsoft Visual Studio Offline Packages"
+          nuget sources Add -Source https://api.nuget.org/v3/index.json & exit 0
+
+      - name: OpenSSL cache.
+        id: cache-openssl
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.LibrariesPath }}/openssl_1_1_1
+          key: ${{ runner.OS }}-${{ env.CACHE_KEY }}-openssl_1_1_1
+      - name: OpenSSL.
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/openssl/openssl.git openssl_1_1_1
+          cd openssl_1_1_1
+          git checkout OpenSSL_1_1_1-stable
+          perl Configure no-shared no-tests debug-VC-WIN64A
+          nmake
+          mkdir out64.dbg
+          move libcrypto.lib out64.dbg
+          move libssl.lib out64.dbg
+          move ossl_static.pdb out64.dbg\ossl_static
+          nmake clean
+          move out64.dbg\ossl_static out64.dbg\ossl_static.pdb
+          perl Configure no-shared no-tests VC-WIN64A
+          nmake
+          mkdir out64
+          move libcrypto.lib out64
+          move libssl.lib out64
+          move ossl_static.pdb out64
+          rmdir /S /Q test
+          rmdir /S /Q .git
+
+      - name: Build wheels.
+        if: env.BUILD_WHEELS == 'true'
+        working-directory: ${{ github.workspace }}
+        env:
+          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.6"
+          CIBW_ARCHS: "auto64"
+          CIBW_BUILD: cp3*-*
+          CIBW_SKIP: cp35-*
+          CIBW_ENVIRONMENT: 'ROOT_PATH="$GITHUB_WORKSPACE"'
+        run: |
+          pip install cibuildwheel
+          cibuildwheel --output-dir dist %REPO_NAME%
+      - uses: actions/upload-artifact@master
+        name: Upload artifact.
+        with:
+          name: "scrypt for Windows x64"
+          path: dist\
