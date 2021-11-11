@@ -22,7 +22,7 @@ jobs:
 
       - name: install openssl (32 bit)
         shell: pwsh
-        run: choco install openssl --limitoutput --architecture=x86
+        run: choco install openssl --limitoutput --x86
 
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
