@@ -11,6 +11,8 @@
 #ifdef _WIN32
 #include <windows.h>
 #include <Wincrypt.h>
+#define RtlGenRandom SystemFunction036
+BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 #endif
 
 /**
@@ -83,24 +85,14 @@ err0:
 
 #else // _WIN32
 
-    HCRYPTPROV context;
-	DWORD error;
-
-    if(CryptAcquireContext(&context, NULL, NULL, PROV_RSA_AES, 0) == NTE_BAD_KEYSET)
+    if(FALSE == RtlGenRandom(buf, buflen))
     {
-		if(!CryptAcquireContext(&context, NULL, NULL, PROV_RSA_AES, CRYPT_NEWKEYSET))
-		{
-			error = GetLastError();
-			return (-1);
-		}
-	}
-
-    if(CryptGenRandom(context, 32, buf))
-    {
-        buf += 32;
-        return (0);
+        return (-1);
     }
-    else{return(-1);}
+    else{
+		buf += buflen;
+		return(0);
+	}
 
 #endif // _WIN32
 }
