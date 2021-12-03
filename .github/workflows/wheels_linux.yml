@@ -5,7 +5,7 @@ env:
   CIBW_TEST_REQUIRES: pytest
   CIBW_TEST_COMMAND: "pytest --pyargs scrypt"
 jobs:
-  build_linux_wheels:
+  build_wheels:
     name: Build wheels on ubuntu-latest
     runs-on: ubuntu-latest
     steps:
@@ -27,7 +27,6 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           path: wheelhouse/*.whl
-
   build_osx_wheels:
     name: Build wheels on macos-latest
     runs-on: macos-latest
@@ -50,7 +49,6 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           path: wheelhouse/*.whl
-
    build_aarch64_wheels:
     name: Build wheels manylinux_aarch64
     runs-on: ubuntu-latest
