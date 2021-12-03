@@ -3,4 +3,4 @@ before-all = "yum install -y openssl-devel"
 
 [[tool.cibuildwheel.overrides]]
 select = "*-musllinux*"
-before-all = "apt-get install -y libssl-dev"
+before-all = "apk add openssl-dev"
