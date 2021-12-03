@@ -96,10 +96,14 @@ PyPy as well.
 
 Changelog
 =========
+0.8.19
+------
+* Use RtlGenRandom instead of CryptGenRandom on windows (Thanks to https://github.com/veorq/cryptocoding/)
+* Add check for c:\Program Files\OpenSSL-Win64 and c:\Program Files\OpenSSL-Win32
 
 0.8.18
 ------
-* add wheel for python 3.9 and 
+* add wheel for python 3.9
 
 0.8.17
 ------

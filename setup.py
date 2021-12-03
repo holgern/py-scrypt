@@ -28,8 +28,7 @@ if sys.platform.startswith('linux'):
     includes = ['/usr/local/include', '/usr/include']
     CFLAGS.append('-O2')
 elif sys.platform.startswith('win32'):
-    define_macros = [('inline', '__inline'),
-                     ('_WIN32', '1')]
+    define_macros = [('inline', '__inline')]
 
     extra_sources = ['scrypt-windows-stubs/gettimeofday.c']
     if struct.calcsize('P') == 8:
@@ -107,7 +106,7 @@ scrypt_module = Extension(
     libraries=libraries)
 
 setup(name='scrypt',
-      version='0.8.18',
+      version='0.8.19',
       description='Bindings for the scrypt key derivation function library',
       author='Magnus Hallin',
       author_email='mhallin@gmail.com',
