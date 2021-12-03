@@ -1,13 +1,13 @@
-name: Build wheel on linux
+name: Build wheel on osx
 on: [push]
 env:
   CIBW_BUILD_VERBOSITY: 1
   CIBW_TEST_REQUIRES: pytest
   CIBW_TEST_COMMAND: "pytest --pyargs scrypt"
 jobs:
-  build_wheels:
-    name: Build wheels on ubuntu-latest
-    runs-on: ubuntu-latest
+  build_osx_wheels:
+    name: Build wheels on macos-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -27,4 +27,3 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           path: wheelhouse/*.whl
-
