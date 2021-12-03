@@ -28,7 +28,8 @@ if sys.platform.startswith('linux'):
     includes = ['/usr/local/include', '/usr/include']
     CFLAGS.append('-O2')
 elif sys.platform.startswith('win32'):
-    define_macros = [('inline', '__inline')]
+    define_macros = [('inline', '__inline'),
+                     ('_WIN32', '1')]
 
     extra_sources = ['scrypt-windows-stubs/gettimeofday.c']
     if struct.calcsize('P') == 8:
