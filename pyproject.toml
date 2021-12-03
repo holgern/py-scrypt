@@ -1,6 +1,6 @@
 [tool.cibuildwheel.linux]
+before-all = "yum install -y openssl-devel"
 
-# Install something required for the build
-# (you might want to use build-system.requires instead)
-before-all = "command -v yum > /dev/null && yum install -y openssl-devel"
-before-all = "command -v apt-get > /dev/null && apt-get install -y libssl-dev"
+[[tool.cibuildwheel.overrides]]
+select = "*-musllinux*"
+before-all = "apt-get install -y libssl-dev"
