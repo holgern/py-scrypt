@@ -1,0 +1,5 @@
+[tool.cibuildwheel.linux]
+
+# Install something required for the build
+# (you might want to use build-system.requires instead)
+before-build = "yum install -y openssl-devel"
