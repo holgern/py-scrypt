@@ -5,7 +5,6 @@ env:
   CIBW_TEST_REQUIRES: pytest
   CIBW_TEST_COMMAND: "pytest --pyargs scrypt"
 jobs:
-     
   build_linux_wheels:
     name: Build wheels on ubuntu-latest
     runs-on: ubuntu-latest
