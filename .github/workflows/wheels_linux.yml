@@ -1,4 +1,4 @@
-name: Build wheel on osx and linux
+name: Build wheel on linux
 on: [push]
 env:
   CIBW_BUILD_VERBOSITY: 1
@@ -6,11 +6,8 @@ env:
   CIBW_TEST_COMMAND: "pytest --pyargs scrypt"
 jobs:
   build_wheels:
-    name: Build wheels on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
+    name: Build wheels on ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -19,6 +16,9 @@ jobs:
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel
+
+      - name: Install libssl-dev
+        run: apt-get install libssl-dev
 
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
