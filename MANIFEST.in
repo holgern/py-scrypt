@@ -2,8 +2,11 @@ recursive-include scrypt-1.2.1 *.h
 recursive-include scrypt-windows-stubs *.h
 include README.rst
 include LICENSE
+include setup.py
+include *.txt
+include tox.ini
 include src/*.c
-include MANIFEST.in
+include scrypt-windows-stubs/*.c
 include MANIFEST.in
 
 include scrypt/__init__.py

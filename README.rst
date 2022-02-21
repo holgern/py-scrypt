@@ -96,6 +96,10 @@ PyPy as well.
 
 Changelog
 =========
+0.8.20
+------
+* Fix #8 by adding missing gettimeofday.c to MANIFEST.in
+
 0.8.19
 ------
 * Use RtlGenRandom instead of CryptGenRandom on windows (Thanks to https://github.com/veorq/cryptocoding/)
