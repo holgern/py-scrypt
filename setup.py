@@ -27,6 +27,11 @@ if sys.platform.startswith('linux'):
     libraries = ['crypto', 'rt']
     includes = ['/usr/local/include', '/usr/include']
     CFLAGS.append('-O2')
+elif os.environ.get('MSYSTEM') == 'MSYS':
+    define_macros = []
+    includes = ['/mingw64/include']
+    libraries = ['libcrypto']
+    CFLAGS.append('-O2')
 elif sys.platform.startswith('win32'):
     define_macros = [('inline', '__inline')]
 
