@@ -27,9 +27,22 @@ if sys.platform.startswith('linux'):
     libraries = ['crypto', 'rt']
     includes = ['/usr/local/include', '/usr/include']
     CFLAGS.append('-O2')
-elif os.environ.get('MSYSTEM') == 'MSYS':
+elif sys.platform.startswith('win32') and os.environ.get('MSYSTEM'):
+    # if we're here, we have Python 3
+    msys2_env = os.getenv('MSYSTEM')
+    print(f'Building for MSYS2 {msys2_env!r} environment')
+    if msys2_env not in ('UCRT64','MSYS'):
+        print(f'py-scrypt is untested with environment {msys2_env!r}: you may experience problems')
+    includes = {
+        'UCRT64':     [],
+        'MSYS':       ['/mingw64/include'],
+        'MINGW32':    ['/mingw32/include'],
+        'MINGW64':    ['/mingw64/include'],
+        'CLANG32':    ['/clang32/include'],
+        'CLANG64':    ['/clang64/include'],
+        'CLANGARM64': ['/clangarm64/include'],
+    }.get(msys2_env,[])
     define_macros = []
-    includes = ['/mingw64/include']
     libraries = ['libcrypto']
     CFLAGS.append('-O2')
 elif sys.platform.startswith('win32'):
