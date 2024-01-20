@@ -53,6 +53,8 @@ elif sys.platform.startswith('win32'):
             openssl_dir = 'c:\OpenSSL-v111-Win64'
         elif os.path.isdir('c:\Program Files\OpenSSL-Win64'):
             openssl_dir = 'c:\Program Files\OpenSSL-Win64'
+        elif os.path.isdir('c:\Program Files\OpenSSL'):
+            openssl_dir = 'c:\Program Files\OpenSSL'
         else:
             openssl_dir = 'c:\OpenSSL-Win64'
         library_dirs = [openssl_dir + '\lib']
@@ -62,6 +64,8 @@ elif sys.platform.startswith('win32'):
             openssl_dir = 'c:\OpenSSL-v111-Win32'
         elif os.path.isdir('c:\Program Files (x86)\OpenSSL-Win32'):
             openssl_dir = 'c:\Program Files (x86)\OpenSSL-Win32'
+        elif os.path.isdir('c:\Program Files (x86)\OpenSSL'):
+            openssl_dir = 'c:\Program Files (x86)\OpenSSL'
         else:
             openssl_dir = 'c:\OpenSSL-Win32'
         library_dirs = [openssl_dir + '\lib']
