@@ -27,8 +27,8 @@ jobs:
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
-          # Disable explicitly python 3.10 and building PyPy wheels
-          CIBW_SKIP: cp310-* pp*
+          # Disable building PyPy wheels
+          CIBW_SKIP: pp*
           CIBW_PRERELEASE_PYTHONS: False
 
       - uses: actions/upload-artifact@v4
