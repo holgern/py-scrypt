@@ -31,6 +31,6 @@ jobs:
         env:
           CIBW_ARCHS_LINUX: ${{matrix.arch}}
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v2
         with:
           path: wheelhouse/*.whl
