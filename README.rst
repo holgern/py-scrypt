@@ -8,15 +8,15 @@ function.
 .. image:: https://img.shields.io/pypi/v/scrypt.svg
     :target: https://pypi.python.org/pypi/scrypt/
     :alt: Latest Version
-  
-.. image:: https://anaconda.org/conda-forge/scrypt/badges/version.svg   
+
+.. image:: https://anaconda.org/conda-forge/scrypt/badges/version.svg
     :target: https://anaconda.org/conda-forge/scrypt
-  
-.. image:: https://anaconda.org/conda-forge/scrypt/badges/downloads.svg   
+
+.. image:: https://anaconda.org/conda-forge/scrypt/badges/downloads.svg
     :target: https://anaconda.org/conda-forge/scrypt
 
 
-.. image:: https://ci.appveyor.com/api/projects/status/h644bjbdawke9vf2?svg=true 
+.. image:: https://ci.appveyor.com/api/projects/status/h644bjbdawke9vf2?svg=true
     :target: https://ci.appveyor.com/project/holger80/py-scrypt
 
 .. image:: https://www.travis-ci.com/holgern/py-scrypt.svg?branch=master
@@ -35,7 +35,7 @@ Installation
 ============
 
 For Debian and Ubuntu, please ensure that the following packages are installed:
-	
+
 .. code:: bash
 
     $ sudo apt-get install build-essential libssl-dev python-dev
@@ -54,8 +54,8 @@ For OSX, please do the following::
 
 For OSX, you can also use the precompiled wheels. They are installed by::
 
-    $ pip install scrypt 
-	
+    $ pip install scrypt
+
 For Windows, please use the precompiled wheels. They are installed by::
 
     $ pip install scrypt
@@ -112,8 +112,8 @@ Changelog
 0.8.17
 ------
 
-* add_dll_directory for python 3.8 on windows, as importlib.util.find_spec does not search all paths anymore 
- 
+* add_dll_directory for python 3.8 on windows, as importlib.util.find_spec does not search all paths anymore
+
 0.8.16
 ------
 
@@ -175,7 +175,7 @@ Changelog
 -----
 
 * MANIFEST.in fixed
-* scrypt.py moved into own scrypt directory with __init__.py 
+* scrypt.py moved into own scrypt directory with __init__.py
 * openssl library path for osx wheel repaired
 
 0.8.4

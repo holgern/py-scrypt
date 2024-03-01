@@ -68,4 +68,4 @@ source ~/.venv/bin/activate
 pip install --upgrade pip
 pip install --upgrade wheel
 pip install tox
-pip install delocate 
+pip install delocate

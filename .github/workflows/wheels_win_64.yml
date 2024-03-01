@@ -7,7 +7,7 @@ env:
   CIBW_TEST_REQUIRES: pytest
   CIBW_TEST_COMMAND: "pytest --pyargs scrypt"
 jobs:
-      
+
   build_wheels_for_win:
     name: Build wheels on Win64
     runs-on: windows-latest

@@ -21,7 +21,7 @@ jobs:
         path: dist/*.tar.gz
     - name: Check metadata
       run: twine check dist/*
-      
+
   upload_pypi:
     name: Upload to PyPI (prod)
     needs: [make_sdist]
