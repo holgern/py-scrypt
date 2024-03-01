@@ -142,7 +142,7 @@ scrypt_module = Extension(
 
 setup(
     name='scrypt',
-    version='0.8.21',
+    version='0.8.23',
     description='Bindings for the scrypt key derivation function library',
     author='Magnus Hallin',
     author_email='mhallin@gmail.com',

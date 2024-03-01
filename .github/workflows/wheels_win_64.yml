@@ -34,11 +34,12 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: wheelhouse/*.whl
+
   upload_pypi:
     name: Upload to PyPI (prod)
     needs: [build_wheels_for_win]
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
         with:
