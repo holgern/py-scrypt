@@ -23,7 +23,7 @@ else:
     import importlib.util
     _scrypt = cdll.LoadLibrary(importlib.util.find_spec('_scrypt').origin)
 
-__version__ = '0.8.18'
+__version__ = '0.8.22'
 
 _scryptenc_buf = _scrypt.exp_scryptenc_buf
 _scryptenc_buf.argtypes = [c_char_p,  # const uint_t  *inbuf
