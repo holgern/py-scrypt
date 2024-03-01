@@ -16,12 +16,6 @@ function.
     :target: https://anaconda.org/conda-forge/scrypt
 
 
-.. image:: https://ci.appveyor.com/api/projects/status/h644bjbdawke9vf2?svg=true
-    :target: https://ci.appveyor.com/project/holger80/py-scrypt
-
-.. image:: https://www.travis-ci.com/holgern/py-scrypt.svg?branch=master
-    :target: https://www.travis-ci.com/holgern/py-scrypt
-
 Scrypt is useful when encrypting password as it is possible to specify
 a *minimum* amount of time to use when encrypting and decrypting. If,
 for example, a password takes 0.05 seconds to verify, a user won't
