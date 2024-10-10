@@ -90,6 +90,10 @@ PyPy as well.
 
 Changelog
 =========
+0.8.24
+------
+* Building of all wheels works with github actions
+
 0.8.20
 ------
 * Fix #8 by adding missing gettimeofday.c to MANIFEST.in
