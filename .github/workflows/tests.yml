@@ -1,11 +1,10 @@
 name: Run tests
 on: [push]
 jobs:
-  run:
-    runs-on: ${{ matrix.os }}
+  ubuntu:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-2019, windows-latest, macos-latest]
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
     steps:
     - uses: actions/checkout@master
@@ -13,6 +12,42 @@ jobs:
       uses: actions/setup-python@master
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Install packages
+      run: |
+        pip install pytest
+        pip install -e .
+        pytest
+  ubuntu:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+    - uses: actions/checkout@master
+    - name: Setup Python
+      uses: actions/setup-python@master
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install openssl
+        run: choco install openssl --limitoutput
+    - name: Install packages
+      run: |
+        pip install pytest
+        pip install -e .
+        pytest
+  ubuntu:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+    - uses: actions/checkout@master
+    - name: Setup Python
+      uses: actions/setup-python@master
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install openssl
+        run: brew install openssl@1.1
     - name: Install packages
       run: |
         pip install pytest
