@@ -24,8 +24,8 @@ jobs:
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
           # Disable explicitly building PyPy wheels
-          CFLAGS: "-I/opt/homebrew/opt/openssl@1.1/include"
-          LDFLAGS: "-L/opt/homebrew/opt/openssl@1.1/lib"
+          CFLAGS: "-I$(brew --prefix openssl)/include"
+          LDFLAGS: "-L$(brew --prefix openssl)/lib"
           CIBW_SKIP: pp*
           CIBW_PRERELEASE_PYTHONS: False
 
