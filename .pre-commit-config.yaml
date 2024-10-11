@@ -47,12 +47,6 @@ repos:
         args: ["--profile", "black"]
         name: isort except __init__.py
         exclude: (^(scrypt-1.2.1/)|/__init__\.py$)
-  - repo: https://github.com/myint/docformatter
-    rev: v1.7.5
-    hooks:
-      - id: docformatter
-        exclude: ^(scrypt-1.2.1/)
-        args: ["--in-place", "--wrap-summaries=88"]
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.15.1
     hooks:
