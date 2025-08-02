@@ -8,7 +8,6 @@ import scrypt
 
 
 class TestScrypt(testm.TestCase):
-
     def setUp(self):
         self.input = "message"
         self.password = "password"
@@ -25,7 +24,7 @@ class TestScrypt(testm.TestCase):
         for row in ciphertxt_reader:
             self.ciphertexts.append(row)
         cvf.close()
-        self.ciphertext = a2b_hex(bytes(self.ciphertexts[1][5].encode('ascii')))
+        self.ciphertext = a2b_hex(bytes(self.ciphertexts[1][5].encode("ascii")))
 
     def test_encrypt_decrypt(self):
         """Test encrypt for simple encryption and decryption."""
@@ -128,7 +127,7 @@ class TestScrypt(testm.TestCase):
     def test_decrypt_from_csv_ciphertexts(self):
         """Test decrypt function with precalculated combinations."""
         for row in self.ciphertexts[1:]:
-            h = scrypt.decrypt(a2b_hex(bytes(row[5].encode('ascii'))), row[1])
+            h = scrypt.decrypt(a2b_hex(bytes(row[5].encode("ascii"))), row[1])
             self.assertEqual(bytes(h.encode("ascii")), row[0].encode("ascii"))
 
     def test_decrypt_maxtime_positional(self):
@@ -177,7 +176,6 @@ class TestScrypt(testm.TestCase):
 
 
 class TestScryptHash(testm.TestCase):
-
     def setUp(self):
         self.input = "message"
         self.password = "password"

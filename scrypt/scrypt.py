@@ -14,9 +14,9 @@ from ctypes import (
     pointer,
 )
 
-if sys.version_info >= (3, 8) and sys.platform == 'win32':
-    lib_path = os.path.join(os.path.normpath(sys.prefix), 'Library', 'bin')
-    build_dir = os.path.join(os.path.dirname(__file__), '../')
+if sys.version_info >= (3, 8) and sys.platform == "win32":
+    lib_path = os.path.join(os.path.normpath(sys.prefix), "Library", "bin")
+    build_dir = os.path.join(os.path.dirname(__file__), "../")
     if os.path.exists(lib_path):
         os.add_dll_directory(lib_path)
     if os.path.exists(build_dir):
@@ -24,9 +24,9 @@ if sys.version_info >= (3, 8) and sys.platform == 'win32':
 import importlib
 import importlib.util
 
-_scrypt = cdll.LoadLibrary(importlib.util.find_spec('_scrypt').origin)
+_scrypt = cdll.LoadLibrary(importlib.util.find_spec("_scrypt").origin)
 
-__version__ = '0.8.27'
+__version__ = "0.8.27"
 
 _scryptenc_buf = _scrypt.exp_scryptenc_buf
 _scryptenc_buf.argtypes = [
@@ -73,20 +73,20 @@ _crypto_scrypt.argtypes = [
 _crypto_scrypt.restype = c_int
 
 ERROR_MESSAGES = [
-    'success',
-    'getrlimit or sysctl(hw.usermem) failed',
-    'clock_getres or clock_gettime failed',
-    'error computing derived key',
-    'could not read salt from /dev/urandom',
-    'error in OpenSSL',
-    'malloc failed',
-    'data is not a valid scrypt-encrypted block',
-    'unrecognized scrypt format',
-    'decrypting file would take too much memory',
-    'decrypting file would take too long',
-    'password is incorrect',
-    'error writing output file',
-    'error reading input file',
+    "success",
+    "getrlimit or sysctl(hw.usermem) failed",
+    "clock_getres or clock_gettime failed",
+    "error computing derived key",
+    "could not read salt from /dev/urandom",
+    "error in OpenSSL",
+    "malloc failed",
+    "data is not a valid scrypt-encrypted block",
+    "unrecognized scrypt format",
+    "decrypting file would take too much memory",
+    "decrypting file would take too long",
+    "password is incorrect",
+    "error writing output file",
+    "error reading input file",
 ]
 
 MAXMEM_DEFAULT = 0
@@ -107,7 +107,7 @@ class error(Exception):
 
 def _ensure_bytes(data):
     if isinstance(data, str):
-        return bytes(data, 'utf-8')
+        return bytes(data, "utf-8")
 
     return data
 
@@ -168,7 +168,7 @@ def decrypt(
     maxtime=MAXTIME_DEFAULT,
     maxmem=MAXMEM_DEFAULT,
     maxmemfrac=MAXMEMFRAC_DEFAULT,
-    encoding='utf-8',
+    encoding="utf-8",
 ):
     """Decrypt a string using a password.
 
@@ -246,8 +246,8 @@ def hash(password, salt, N=1 << 14, r=8, p=1, buflen=64):
 
     if r * p >= (1 << 30) or N <= 1 or (N & (N - 1)) != 0 or p < 1 or r < 1:
         raise error(
-            'hash parameters are wrong (r*p should be < 2**30, '
-            'and N should be a power of two > 1)'
+            "hash parameters are wrong (r*p should be < 2**30, "
+            "and N should be a power of two > 1)"
         )
 
     result = _crypto_scrypt(
@@ -255,9 +255,9 @@ def hash(password, salt, N=1 << 14, r=8, p=1, buflen=64):
     )
 
     if result:
-        raise error('could not compute hash')
+        raise error("could not compute hash")
 
     return outbuf.raw
 
 
-__all__ = ['error', 'encrypt', 'decrypt', 'hash']
+__all__ = ["error", "encrypt", "decrypt", "hash"]

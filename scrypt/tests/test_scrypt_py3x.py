@@ -4,17 +4,16 @@ from sys import version_info
 import scrypt
 
 
-@testm.skipIf(version_info < (3, 0, 0, 'final', 0), "Tests for Python 3 only")
+@testm.skipIf(version_info < (3, 0, 0, "final", 0), "Tests for Python 3 only")
 class TestScryptForPy3(testm.TestCase):
-
     def setUp(self):
         self.input = "message"
         self.password = "password"
         self.byte_text = (
-            b'\xe1\x93\x84\xe1\x93\x87\xe1\x95\x97'
-            b'\xe1\x92\xbb\xe1\x92\xa5\xe1\x90\x85\xe1\x91\xa6'
+            b"\xe1\x93\x84\xe1\x93\x87\xe1\x95\x97"
+            b"\xe1\x92\xbb\xe1\x92\xa5\xe1\x90\x85\xe1\x91\xa6"
         )
-        self.unicode_text = self.byte_text.decode('utf-8', "strict")
+        self.unicode_text = self.byte_text.decode("utf-8", "strict")
 
     def test_py3_encrypt_allows_bytes_input(self):
         """Test Py3 encrypt allows unicode input."""
