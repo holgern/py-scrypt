@@ -95,8 +95,6 @@ Changelog
 * Fix build for OSX using openssl 3.0
 * Build Wheel for Python 3.13
 * switch to ruff
-  
-
 
 0.8.24
 ------
