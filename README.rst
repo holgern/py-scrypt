@@ -90,6 +90,14 @@ PyPy as well.
 
 Changelog
 =========
+0.8.29
+------
+* Fix build for OSX using openssl 3.0
+* Build Wheel for Python 3.13
+* switch to ruff
+  
+
+
 0.8.24
 ------
 * Building of all wheels works with github actions

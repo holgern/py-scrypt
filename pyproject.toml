@@ -6,4 +6,4 @@ select = "*-musllinux*"
 before-all = "apk add openssl-dev"
 
 [tool.cibuildwheel.macos]
-before-all = "brew install openssl@1.1"
+before-all = "brew install openssl@3"
