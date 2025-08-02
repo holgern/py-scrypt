@@ -18,14 +18,14 @@ jobs:
         run: python -m pip install cibuildwheel
 
       - name: Install openssl
-        run: brew install openssl@1.1
+        run: brew install openssl@3
 
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
           # Disable explicitly building PyPy wheels
-          CFLAGS: "-I$(brew --prefix openssl@1.1)/include"
-          LDFLAGS: "-L$(brew --prefix openssl@1.1)/lib"
+          CFLAGS: "-I$(brew --prefix openssl@3)/include"
+          LDFLAGS: "-L$(brew --prefix openssl@3)/lib"
           CIBW_SKIP: pp*
           CIBW_PRERELEASE_PYTHONS: False
 
