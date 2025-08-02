@@ -18,7 +18,7 @@ jobs:
         run: python -m pip install cibuildwheel
 
       - name: Install openssl
-        run: brew install openssl@1.1
+        run: brew install openssl@3
 
       - name: Build wheels
         run: env LDFLAGS="-L$(brew --prefix openssl)/lib" CFLAGS="-I$(brew --prefix openssl)/include" python -m cibuildwheel --output-dir wheelhouse
@@ -28,6 +28,7 @@ jobs:
           LDFLAGS: "-L$(brew --prefix openssl)/lib"
           CIBW_SKIP: pp*
           CIBW_PRERELEASE_PYTHONS: False
+          MACOSX_DEPLOYMENT_TARGET: 14.0
 
       - uses: actions/upload-artifact@v4
         with:
