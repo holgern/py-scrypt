@@ -54,6 +54,7 @@ elif sys.platform.startswith("win32"):
     extra_sources = [
         "scrypt-windows-stubs/gettimeofday.c",
         "scrypt-windows-stubs/mman.c",
+        "scrypt-windows-stubs/syslog.c",
     ]
     CFLAGS.append("-DPOSIXFAIL_ABSTRACT_DECLARATOR")
     if struct.calcsize("P") == 8:

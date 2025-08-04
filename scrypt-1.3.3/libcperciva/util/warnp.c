@@ -65,6 +65,15 @@ warn(const char * fmt, ...)
 
 	va_start(ap, fmt);
 	if (use_syslog == 0) {
+	#ifdef _MSC_VER
+		/* Print to stderr (no flockfile in Windows) */
+		fprintf(stderr, "%s", (name != NULL) ? name : "(unknown)");
+		if (fmt != NULL) {
+			fprintf(stderr, ": ");
+			vfprintf(stderr, fmt, ap);
+		}
+		fprintf(stderr, ": %s\n", strerror(saved_errno));
+#else
 		/* Stop other threads writing to stderr. */
 		flockfile(stderr);
 
@@ -78,6 +87,7 @@ warn(const char * fmt, ...)
 
 		/* Allow other threads to write to stderr. */
 		funlockfile(stderr);
+#endif
 	} else {
 		/* Print to syslog. */
 		if (fmt != NULL) {
@@ -107,6 +117,15 @@ warnx(const char * fmt, ...)
 
 	va_start(ap, fmt);
 	if (use_syslog == 0) {
+	#ifdef _MSC_VER
+		/* Print to stderr (no flockfile in Windows) */
+		fprintf(stderr, "%s", (name != NULL) ? name : "(unknown)");
+		if (fmt != NULL) {
+			fprintf(stderr, ": ");
+			vfprintf(stderr, fmt, ap);
+		}
+		fprintf(stderr, "\n");
+#else
 		/* Stop other threads writing to stderr. */
 		flockfile(stderr);
 
@@ -120,6 +139,7 @@ warnx(const char * fmt, ...)
 
 		/* Allow other threads to write to stderr. */
 		funlockfile(stderr);
+#endif
 	} else {
 		/* Print to syslog. */
 		if (fmt != NULL) {
