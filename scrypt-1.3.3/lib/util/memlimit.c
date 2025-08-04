@@ -27,6 +27,15 @@
  * online backup system.
  */
 
+#ifdef _WIN32
+#include "memlimit.h"
+// On Windows, just disable memory limit checks (or set a default value)
+int memtouse(size_t maxmem, double maxmemfrac, size_t *memlimit) {
+    *memlimit = 0;
+    return 0;
+}
+#else
+
 #include "platform.h"
 
 #include <sys/types.h>
@@ -357,3 +366,4 @@ memtouse(size_t maxmem, double maxmemfrac, size_t * memlimit)
 	*memlimit = memavail;
 	return (0);
 }
+#endif
