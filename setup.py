@@ -51,7 +51,10 @@ elif sys.platform.startswith("win32") and os.environ.get("MSYSTEM"):
 elif sys.platform.startswith("win32"):
     define_macros = [("inline", "__inline")]
 
-    extra_sources = ["scrypt-windows-stubs/gettimeofday.c"]
+    extra_sources = [
+        "scrypt-windows-stubs/gettimeofday.c",
+        "scrypt-windows-stubs/mman.c",
+    ]
     if struct.calcsize("P") == 8:
         if (
             os.path.isdir(r"c:\OpenSSL-v111-Win64")
