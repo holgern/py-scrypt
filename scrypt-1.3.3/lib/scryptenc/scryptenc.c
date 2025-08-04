@@ -55,10 +55,10 @@ static int pickparams(size_t, double, double,
     int *, uint32_t *, uint32_t *, int);
 static int checkparams(size_t, double, double, int, uint32_t, uint32_t, int,
     int);
-#ifdef POSIXFAIL_ABSTRACT_DECLARATOR
-static int scryptdec_file_load_header(FILE * infile, uint8_t header[static 96]);
-#elif _MSC_VER
+#if _MSC_VER
 static int scryptdec_file_load_header(FILE *, uint8_t *);
+#elif POSIXFAIL_ABSTRACT_DECLARATOR
+static int scryptdec_file_load_header(FILE * infile, uint8_t header[static 96]);
 #else
 static int scryptdec_file_load_header(FILE *, uint8_t[static 96]);
 #endif
