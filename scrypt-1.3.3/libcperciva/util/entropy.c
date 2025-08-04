@@ -1,10 +1,16 @@
 #include <assert.h>
 #include <errno.h>
-#include <fcntl.h>
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
+
+#ifdef _MSC_VER
+#include <windows.h>
+#include <wincrypt.h>
+#else
+#include <fcntl.h>
 #include <unistd.h>
+#endif
 
 #include "warnp.h"
 
@@ -19,12 +25,16 @@
  */
 
 /**
- * Entropy reader state.  At present it holds a file descriptor for
- * /dev/urandom, but in the future this structure may gain other OS-dependent
- * state, e.g. a Windows Handle.
+ * Entropy reader state.  This structure holds OS-dependent state:
+ * - On Unix: a file descriptor for /dev/urandom
+ * - On Windows: a cryptographic provider handle
  */
 struct entropy_read_cookie {
+#ifdef _MSC_VER
+	HCRYPTPROV hCryptProv;
+#else
 	int fd;
+#endif
 };
 
 /**
@@ -43,11 +53,20 @@ entropy_read_init(void)
 		goto err0;
 	}
 
+#ifdef _MSC_VER
+	/* Acquire a cryptographic provider context handle. */
+	if (!CryptAcquireContext(&er->hCryptProv, NULL, NULL, 
+	                         PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
+		warnp("CryptAcquireContext");
+		goto err1;
+	}
+#else
 	/* Open /dev/urandom. */
 	if ((er->fd = open("/dev/urandom", O_RDONLY)) == -1) {
 		warnp("open(/dev/urandom)");
 		goto err1;
 	}
+#endif
 
 	/* Success! */
 	return (er);
@@ -68,11 +87,18 @@ int
 entropy_read_fill(struct entropy_read_cookie * er, uint8_t * buf,
     size_t buflen)
 {
-	ssize_t lenread;
-
 	/* Sanity checks. */
 	assert(er != NULL);
 	assert(buflen <= SSIZE_MAX);
+
+#ifdef _MSC_VER
+	/* Use Windows CryptoAPI to generate random bytes */
+	if (!CryptGenRandom(er->hCryptProv, (DWORD)buflen, buf)) {
+		warnp("CryptGenRandom");
+		goto err0;
+	}
+#else
+	ssize_t lenread;
 
 	/* Read bytes until we have filled the buffer. */
 	while (buflen > 0) {
@@ -91,6 +117,7 @@ entropy_read_fill(struct entropy_read_cookie * er, uint8_t * buf,
 		buf += (size_t)lenread;
 		buflen -= (size_t)lenread;
 	}
+#endif
 
 	/* Success! */
 	return (0);
@@ -107,10 +134,16 @@ err0:
 int
 entropy_read_done(struct entropy_read_cookie * er)
 {
-
 	/* Sanity check. */
 	assert(er != NULL);
 
+#ifdef _MSC_VER
+	/* Release the cryptographic provider context */
+	if (!CryptReleaseContext(er->hCryptProv, 0)) {
+		warnp("CryptReleaseContext");
+		goto err1;
+	}
+#else
 	/* Close the device. */
 	while (close(er->fd) == -1) {
 		if (errno != EINTR) {
@@ -118,6 +151,7 @@ entropy_read_done(struct entropy_read_cookie * er)
 			goto err1;
 		}
 	}
+#endif
 
 	/* Clean up. */
 	free(er);

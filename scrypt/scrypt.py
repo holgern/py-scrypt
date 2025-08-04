@@ -84,7 +84,7 @@ ERROR_MESSAGES = [
     "getrlimit or sysctl(hw.usermem) failed",
     "clock_getres or clock_gettime failed",
     "error computing derived key",
-    "could not read salt from /dev/urandom",
+    "could not obtain cryptographically secure random bytes",
     "error in OpenSSL",
     "malloc failed",
     "data is not a valid scrypt-encrypted block",
