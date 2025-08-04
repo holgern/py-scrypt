@@ -1,7 +1,12 @@
-#include <sys/time.h>
-
 #include <errno.h>
 #include <time.h>
+
+#ifdef _MSC_VER
+#include <Windows.h>
+#include <sys/time.h> /* Use the Windows stub header */
+#else
+#include <sys/time.h>
+#endif
 
 #include "warnp.h"
 
@@ -26,6 +31,32 @@
 int
 monoclock_get(struct timeval * tv)
 {
+#ifdef _MSC_VER
+	/* 
+	 * Windows doesn't have a monotonic clock, but we can use QueryPerformanceCounter
+	 * which is high-resolution and generally monotonic.
+	 */
+	static LARGE_INTEGER freq = {0};
+	LARGE_INTEGER count;
+	
+	/* Get the frequency on first call */
+	if (freq.QuadPart == 0) {
+		if (!QueryPerformanceFrequency(&freq)) {
+			warnp("QueryPerformanceFrequency");
+			goto err0;
+		}
+	}
+	
+	/* Get the current counter */
+	if (!QueryPerformanceCounter(&count)) {
+		warnp("QueryPerformanceCounter");
+		goto err0;
+	}
+	
+	/* Convert to timeval */
+	tv->tv_sec = (long)(count.QuadPart / freq.QuadPart);
+	tv->tv_usec = (long)((count.QuadPart % freq.QuadPart) * 1000000 / freq.QuadPart);
+#else
 #if defined(USE_MONOTONIC) || defined(USE_REALTIME)
 	struct timespec tp;
 #endif
@@ -53,6 +84,7 @@ monoclock_get(struct timeval * tv)
 		goto err0;
 	}
 #endif
+#endif /* _MSC_VER */
 
 	/* Success! */
 	return (0);
@@ -71,6 +103,26 @@ err0:
 int
 monoclock_get_cputime(struct timeval * tv)
 {
+#ifdef _MSC_VER
+	FILETIME createTime, exitTime, kernelTime, userTime;
+	ULARGE_INTEGER uUserTime;
+	
+	/* Get process times */
+	if (!GetProcessTimes(GetCurrentProcess(), &createTime, &exitTime,
+	    &kernelTime, &userTime)) {
+		warnp("GetProcessTimes");
+		goto err0;
+	}
+	
+	/* Convert FILETIME to timeval (user time only) */
+	uUserTime.LowPart = userTime.dwLowDateTime;
+	uUserTime.HighPart = userTime.dwHighDateTime;
+	
+	/* Windows FILETIME is in 100-nanosecond intervals since Jan 1, 1601 */
+	/* Convert to seconds and microseconds */
+	tv->tv_sec = (long)(uUserTime.QuadPart / 10000000ULL);
+	tv->tv_usec = (long)((uUserTime.QuadPart % 10000000ULL) / 10);
+#else
 	/* Use CLOCK_PROCESS_CPUTIME_ID if available. */
 #ifdef CLOCK_PROCESS_CPUTIME_ID
 	struct timespec tp;
@@ -86,6 +138,7 @@ monoclock_get_cputime(struct timeval * tv)
 	/* Fall back to monoclock_get(). */
 	if (monoclock_get(tv))
 		goto err0;
+#endif /* _MSC_VER */
 
 	/* Success! */
 	return (0);
@@ -106,6 +159,20 @@ err0:
 int
 monoclock_getres(double * resd)
 {
+#ifdef _MSC_VER
+	static LARGE_INTEGER freq = {0};
+	
+	/* Get the frequency on first call */
+	if (freq.QuadPart == 0) {
+		if (!QueryPerformanceFrequency(&freq)) {
+			warnp("QueryPerformanceFrequency");
+			goto err0;
+		}
+	}
+	
+	/* Return resolution in seconds */
+	*resd = 1.0 / (double)freq.QuadPart;
+#else
 #if defined(USE_MONOTONIC) || defined(USE_REALTIME)
 	struct timespec res;
 #endif
@@ -138,11 +205,18 @@ monoclock_getres(double * resd)
 	 */
 	*resd = 1.0 / CLOCKS_PER_SEC;
 #endif
+#endif /* _MSC_VER */
 
 	/* Success! */
 	return (0);
 
-#if defined(USE_MONOTONIC) || defined(USE_REALTIME)
+#if !defined(_MSC_VER) && (defined(USE_MONOTONIC) || defined(USE_REALTIME))
+err0:
+	/* Failure! */
+	return (-1);
+#endif
+
+#ifdef _MSC_VER
 err0:
 	/* Failure! */
 	return (-1);
