@@ -6,6 +6,7 @@ env:
   # Run the package tests using `pytest`
   CIBW_TEST_REQUIRES: pytest
   CIBW_TEST_COMMAND: "pytest --pyargs scrypt"
+  CIBW_SKIP: cp36-*, cp37-*
 jobs:
 
   build_wheels_for_win:
