@@ -69,7 +69,11 @@ elif sys.platform.startswith("win32"):
         else:
             openssl_dir = r"c:\OpenSSL-Win64"
         library_dirs = [openssl_dir + r"\lib"]
-        includes = [openssl_dir + r"\include", "scrypt-windows-stubs/include"]
+        includes = [
+            openssl_dir + r"\include",
+            "scrypt-windows-stubs/include",
+            "scrypt-windows-stubs/include/sys",
+        ]
     else:
         if os.path.isdir(r"c:\OpenSSL-v111-Win32"):
             openssl_dir = r"c:\OpenSSL-v111-Win32"
@@ -80,7 +84,11 @@ elif sys.platform.startswith("win32"):
         else:
             openssl_dir = r"c:\OpenSSL-Win32"
         library_dirs = [openssl_dir + r"\lib"]
-        includes = [openssl_dir + r"\include", "scrypt-windows-stubs/include"]
+        includes = [
+            openssl_dir + r"\include",
+            "scrypt-windows-stubs/include",
+            "scrypt-windows-stubs/include/sys",
+        ]
     windows_link_legacy_openssl = os.environ.get(
         "SCRYPT_WINDOWS_LINK_LEGACY_OPENSSL", None
     )
