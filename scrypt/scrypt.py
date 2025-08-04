@@ -192,7 +192,8 @@ def encrypt(
       instances, they will be encoded with utf-8
     - The result will be a bytes instance
     - If logN, r, and p are all zero, optimal parameters will be chosen automatically
-    - If logN, r, and p are provided, they must all be non-zero and will be used explicitly
+    - If logN, r, and p are provided,
+      they must all be non-zero and will be used explicitly
 
     Args:
         input: Data to encrypt (bytes or str)

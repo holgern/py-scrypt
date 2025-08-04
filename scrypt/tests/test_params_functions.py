@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 import unittest
-import sys
+
 import pytest
-import scrypt
-from scrypt.scrypt import pickparams, checkparams, error
+
+from scrypt.scrypt import checkparams, error, pickparams
 
 
 class TestParamFunctions(unittest.TestCase):

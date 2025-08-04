@@ -222,15 +222,86 @@ For encryption/decryption, the library exports two functions
 From these, one can make a simple password verifier using the following
 functions::
 
+    import os
+    import scrypt
+
     def hash_password(password, maxtime=0.5, datalength=64):
+        """Create a secure password hash using scrypt encryption.
+
+        Args:
+            password: The password to hash
+            maxtime: Maximum time to spend hashing in seconds
+            datalength: Length of the random data to encrypt
+
+        Returns:
+            bytes: An encrypted hash suitable for storage and later verification
+        """
         return scrypt.encrypt(os.urandom(datalength), password, maxtime=maxtime)
 
     def verify_password(hashed_password, guessed_password, maxtime=0.5):
+        """Verify a password against its hash with better error handling.
+
+        Args:
+            hashed_password: The stored password hash from hash_password()
+            guessed_password: The password to verify
+            maxtime: Maximum time to spend in verification
+
+        Returns:
+            tuple: (is_valid, status_code) where:
+                - is_valid: True if password is correct, False otherwise
+                - status_code: One of "correct", "wrong_password", "time_limit_exceeded",
+                  "memory_limit_exceeded", or "error"
+
+        Raises:
+            scrypt.error: Only raised for resource limit errors, which you may want to
+                        handle by retrying with higher limits or force=True
+        """
         try:
             scrypt.decrypt(hashed_password, guessed_password, maxtime, encoding=None)
-            return True
-        except scrypt.error:
-            return False
+            return True, "correct"
+        except scrypt.error as e:
+            # Check the specific error message to differentiate between causes
+            error_message = str(e)
+            if error_message == "password is incorrect":
+                # Wrong password was provided
+                return False, "wrong_password"
+            elif error_message == "decrypting file would take too long":
+                # Time limit exceeded
+                raise  # Re-raise so caller can handle appropriately
+            elif error_message == "decrypting file would take too much memory":
+                # Memory limit exceeded
+                raise  # Re-raise so caller can handle appropriately
+            else:
+                # Some other error occurred (corrupted data, etc.)
+                return False, "error"
+
+    # Example usage:
+
+    # Create a hash of a password
+    stored_hash = hash_password("correct_password", maxtime=0.1)
+
+    # Verify with correct password
+    is_valid, status = verify_password(stored_hash, "correct_password", maxtime=0.1)
+    if is_valid:
+        print("Password is correct!")  # This will be printed
+
+    # Verify with wrong password
+    is_valid, status = verify_password(stored_hash, "wrong_password", maxtime=0.1)
+    if not is_valid:
+        if status == "wrong_password":
+            print("Password is incorrect!")  # This will be printed
+
+    # Verify with insufficient time
+    try:
+        # Set maxtime very low to trigger a time limit error
+        is_valid, status = verify_password(stored_hash, "correct_password", maxtime=0.00001)
+    except scrypt.error as e:
+        if "would take too long" in str(e):
+            print("Time limit exceeded, try with higher maxtime or force=True")
+
+            # Retry with force=True
+            result = scrypt.decrypt(stored_hash, "correct_password", maxtime=0.00001, force=True, encoding=None)
+            print("Forced decryption successful!")
 
 The `encrypt` function accepts several parameters to control its behavior::
 
