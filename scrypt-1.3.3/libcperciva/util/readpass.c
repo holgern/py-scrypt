@@ -6,6 +6,7 @@
 #include <io.h>
 #include <conio.h>
 #include <signal.h>  /* Use the Windows signal.h */
+#include <signal_stubs.h> /* Additional signal definitions */
 #define isatty _isatty
 #define fileno _fileno
 #include <termios.h> /* Use our stub termios.h */
@@ -23,20 +24,33 @@
 
 #define MAXPASSLEN 2048
 
+#ifdef _MSC_VER
+/* Windows doesn't have all these signals, use only the ones available */
+static const int badsigs[] = {
+	SIGINT, SIGTERM
+};
+#else
 /* Signals we need to block. */
 static const int badsigs[] = {
 	SIGALRM, SIGHUP, SIGINT,
 	SIGPIPE, SIGQUIT, SIGTERM,
 	SIGTSTP, SIGTTIN, SIGTTOU
 };
+#endif
 #define NSIGS sizeof(badsigs)/sizeof(badsigs[0])
 
 /* Highest signal number we care about. */
 #define MAX2(a, b) ((a) > (b) ? (a) : (b))
 #define MAX4(a, b, c, d) MAX2(MAX2(a, b), MAX2(c, d))
 #define MAX8(a, b, c, d, e, f, g, h) MAX2(MAX4(a, b, c, d), MAX4(e, f, g, h))
+
+#ifdef _MSC_VER
+/* Windows only has a subset of signals, simplify */
+#define MAXBADSIG	MAX2(SIGINT, SIGTERM)
+#else
 #define MAXBADSIG	MAX2(SIGALRM, MAX8(SIGHUP, SIGINT, SIGPIPE, SIGQUIT, \
 			    SIGTERM, SIGTSTP, SIGTTIN, SIGTTOU))
+#endif
 
 /* Has a signal of this type been received? */
 static volatile sig_atomic_t gotsig[MAXBADSIG + 1];
@@ -49,6 +63,20 @@ handle(int sig)
 	gotsig[sig] = 1;
 }
 
+#ifdef _MSC_VER
+/* Windows signal handling is simpler */
+static void
+resetsigs(void* savedsa)
+{
+	size_t i;
+	
+	/* If we intercepted a signal, re-issue it. */
+	for (i = 0; i < NSIGS; i++) {
+		if (gotsig[badsigs[i]])
+			raise(badsigs[i]);
+	}
+}
+#else
 /* Restore old signals and re-issue intercepted signals. */
 static void
 resetsigs(struct sigaction savedsa[NSIGS])
@@ -65,6 +93,7 @@ resetsigs(struct sigaction savedsa[NSIGS])
 			raise(badsigs[i]);
 	}
 }
+#endif
 
 /**
  * readpass(passwd, prompt, confirmprompt, devtty):
@@ -87,6 +116,7 @@ readpass(char ** passwd, const char * prompt,
 #ifdef _MSC_VER
 	HANDLE hStdin = INVALID_HANDLE_VALUE;
 	DWORD oldMode = 0;
+	void* savedSigHandlers = NULL; /* Windows doesn't need sigaction */
 	size_t i;
 	int usingtty;
 #else
@@ -120,7 +150,14 @@ readpass(char ** passwd, const char * prompt,
 	}
 
 #ifdef _MSC_VER
-	/* We don't handle signals on Windows the same way */
+	/* We have not received any signals yet. */
+	for (i = 0; i <= MAXBADSIG; i++)
+		gotsig[i] = 0;
+		
+	/* Windows signal handling is simpler - just set handlers */
+	for (i = 0; i < NSIGS; i++) {
+		signal(badsigs[i], handle);
+	}
 	
 	/* If we're reading from a terminal, try to disable echo. */
 	if ((usingtty = isatty(fileno(readfrom))) != 0) {
@@ -282,6 +319,14 @@ retry:
 	/* If we changed terminal settings, reset them. */
 	if (usingtty && hStdin != INVALID_HANDLE_VALUE)
 		SetConsoleMode(hStdin, oldMode);
+		
+	/* Restore default signal handlers */
+	for (i = 0; i < NSIGS; i++) {
+		signal(badsigs[i], SIG_DFL);
+	}
+	
+	/* Re-issue any signals we caught */
+	resetsigs(NULL);
 #else
 	/* If we changed terminal settings, reset them. */
 	if (usingtty)
@@ -332,7 +377,15 @@ err2:
 	if ((readfrom != stdin) && fclose(readfrom))
 		warnp("fclose");
 
-#ifndef _MSC_VER
+#ifdef _MSC_VER
+	/* Restore default signal handlers */
+	for (i = 0; i < NSIGS; i++) {
+		signal(badsigs[i], SIG_DFL);
+	}
+	
+	/* Re-issue any signals we caught */
+	resetsigs(NULL);
+#else
 	/* Restore old signals and re-issue intercepted signals. */
 	resetsigs(savedsa);
 #endif
