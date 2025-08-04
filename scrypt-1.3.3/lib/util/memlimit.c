@@ -32,7 +32,7 @@
 // On Windows, just disable memory limit checks (or set a default value)
 int memtouse(size_t maxmem, double maxmemfrac, size_t *memlimit) {
     *memlimit = 0;
-    return 0;
+    return (1);
 }
 #else
 
