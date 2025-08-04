@@ -31,8 +31,8 @@ if _scrypt_spec and hasattr(_scrypt_spec, "origin"):
     _scrypt = cdll.LoadLibrary(_scrypt_spec.origin)
 else:
     # Fallback for Windows
-    import sys
     import os.path
+    import sys
 
     if sys.platform == "win32":
         # Look for the DLL in common locations
