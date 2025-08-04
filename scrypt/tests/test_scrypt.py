@@ -271,6 +271,11 @@ class TestScryptHash(testm.TestCase):
             scrypt.error, lambda: scrypt.hash(self.input, self.salt, N=-1)
         )
 
+    def test_hash_valid_input(self):
+        # these parameters must be valid
+        h = scrypt.hash(b"password", salt=b"salt", N=2, r=8, p=1)
+        self.assertEqual(len(h), 64)
+
 
 if __name__ == "__main__":
     testm.main()
