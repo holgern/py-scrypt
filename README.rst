@@ -227,7 +227,7 @@ functions::
 
     def verify_password(hashed_password, guessed_password, maxtime=0.5):
         try:
-            scrypt.decrypt(hashed_password, guessed_password, maxtime)
+            scrypt.decrypt(hashed_password, guessed_password, maxtime, encoding=None)
             return True
         except scrypt.error:
             return False

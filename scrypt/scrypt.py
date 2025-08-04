@@ -129,8 +129,18 @@ class error(Exception):
 
 
 def _ensure_bytes(data):
+    """Convert data to bytes if it's a string, otherwise return as is.
+
+    Args:
+        data: String or bytes to convert
+
+    Returns:
+        bytes: The input converted to bytes if needed
+    """
     if isinstance(data, str):
-        return bytes(data, "utf-8")
+        return data.encode("utf-8")
+    elif not isinstance(data, bytes):
+        raise TypeError(f"Expected str or bytes, got {type(data).__name__}")
 
     return data
 
@@ -195,14 +205,26 @@ def decrypt(
     """Decrypt a string using a password.
 
     - `input` and `password` can be both str and bytes. If they are str
-      instances, they wil be encoded with utf-8. `input` *should*
+      instances, they will be encoded with utf-8. `input` *should*
       really be a bytes instance, since that's what `encrypt` returns.
-    - The result will be a str instance encoded with `encoding`.
+    - The result will be a str instance decoded with `encoding`.
       If encoding=None, the result will be a bytes instance.
+
+    Args:
+        input: Encrypted data (bytes or str)
+        password: Password for decryption (bytes or str)
+        maxtime: Maximum time to spend in seconds
+        maxmem: Maximum memory to use in bytes (0 for unlimited)
+        maxmemfrac: Maximum fraction of available memory to use
+        encoding: Encoding to use for output string (None for raw bytes)
+
+    Returns:
+        Decrypted data as str (if encoding is provided) or bytes (if encoding is None)
 
     Exceptions raised:
       - TypeError on invalid input
-      - scrypt.error if decryption failed
+      - scrypt.error if decryption failed or if decoding with the specified
+        encoding fails
 
     For more information on the `maxtime`, `maxmem`, and `maxmemfrac`
     parameters, see the scrypt documentation.
@@ -239,7 +261,11 @@ def decrypt(
     if encoding is None:
         return out_bytes
 
-    return str(out_bytes, encoding)
+    try:
+        # More robust error handling for decoding
+        return out_bytes.decode(encoding)
+    except UnicodeDecodeError as e:
+        raise error(f"Failed to decode using {encoding} encoding: {str(e)}") from e
 
 
 def hash(password, salt, N=1 << 14, r=8, p=1, buflen=64):
