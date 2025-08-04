@@ -1,8 +1,20 @@
-#include <signal.h>
 #include <stdio.h>
 #include <string.h>
+
+#ifdef _MSC_VER
+#include <windows.h>
+#include <io.h>
+#include <conio.h>
+#include <signal.h>  /* Use the Windows signal.h */
+#define isatty _isatty
+#define fileno _fileno
+#include <termios.h> /* Use our stub termios.h */
+#include <unistd.h>  /* Use our stub unistd.h */
+#else
+#include <signal.h>
 #include <termios.h>
 #include <unistd.h>
+#endif
 
 #include "insecure_memzero.h"
 #include "warnp.h"
@@ -72,10 +84,17 @@ readpass(char ** passwd, const char * prompt,
 	FILE * readfrom;
 	char passbuf[MAXPASSLEN];
 	char confpassbuf[MAXPASSLEN];
+#ifdef _MSC_VER
+	HANDLE hStdin = INVALID_HANDLE_VALUE;
+	DWORD oldMode = 0;
+	size_t i;
+	int usingtty;
+#else
 	struct sigaction sa, savedsa[NSIGS];
 	struct termios term, term_old;
 	size_t i;
 	int usingtty;
+#endif
 
 	/* Where should we read the password from? */
 	switch (devtty) {
@@ -100,6 +119,31 @@ readpass(char ** passwd, const char * prompt,
 		goto err1;
 	}
 
+#ifdef _MSC_VER
+	/* We don't handle signals on Windows the same way */
+	
+	/* If we're reading from a terminal, try to disable echo. */
+	if ((usingtty = isatty(fileno(readfrom))) != 0) {
+		/* Get the console handle and current mode */
+		hStdin = GetStdHandle(STD_INPUT_HANDLE);
+		if (hStdin == INVALID_HANDLE_VALUE) {
+			warnp("Cannot get stdin handle");
+			goto err2;
+		}
+		
+		/* Save the old mode */
+		if (!GetConsoleMode(hStdin, &oldMode)) {
+			warnp("Cannot get console mode");
+			goto err2;
+		}
+		
+		/* Set the new mode to disable echo */
+		if (!SetConsoleMode(hStdin, oldMode & (~ENABLE_ECHO_INPUT))) {
+			warnp("Cannot set console mode");
+			goto err2;
+		}
+	}
+#else
 	/* We have not received any signals yet. */
 	for (i = 0; i <= MAXBADSIG; i++)
 		gotsig[i] = 0;
@@ -129,12 +173,46 @@ readpass(char ** passwd, const char * prompt,
 			goto err2;
 		}
 	}
+#endif
 
 retry:
 	/* If we have a terminal, prompt the user to enter the password. */
 	if (usingtty)
 		fprintf(stderr, "%s: ", prompt);
 
+#ifdef _MSC_VER
+	/* Read the password using Windows-specific methods if using console */
+	if (usingtty && readfrom == stdin) {
+		size_t pos = 0;
+		int ch;
+		
+		/* Read characters one at a time */
+		while (pos < MAXPASSLEN - 1) {
+			ch = _getch();
+			if (ch == '\r' || ch == '\n') {
+				break;
+			} else if (ch == '\b') {
+				/* Handle backspace */
+				if (pos > 0)
+					pos--;
+			} else {
+				passbuf[pos++] = (char)ch;
+			}
+		}
+		passbuf[pos] = '\0';
+		/* Add a newline since we're suppressing echo */
+		fprintf(stderr, "\n");
+	} else {
+		/* Use standard method for files */
+		if (fgets(passbuf, MAXPASSLEN, readfrom) == NULL) {
+			if (feof(readfrom))
+				warn0("EOF reading password");
+			else
+				warnp("Cannot read password");
+			goto err3;
+		}
+	}
+#else
 	/* Read the password. */
 	if (fgets(passbuf, MAXPASSLEN, readfrom) == NULL) {
 		if (feof(readfrom))
@@ -143,11 +221,45 @@ retry:
 			warnp("Cannot read password");
 		goto err3;
 	}
+#endif
 
 	/* Confirm the password if necessary. */
 	if (confirmprompt != NULL) {
 		if (usingtty)
 			fprintf(stderr, "%s: ", confirmprompt);
+#ifdef _MSC_VER
+		/* Read confirmation password using Windows-specific methods if using console */
+		if (usingtty && readfrom == stdin) {
+			size_t pos = 0;
+			int ch;
+			
+			/* Read characters one at a time */
+			while (pos < MAXPASSLEN - 1) {
+				ch = _getch();
+				if (ch == '\r' || ch == '\n') {
+					break;
+				} else if (ch == '\b') {
+					/* Handle backspace */
+					if (pos > 0)
+						pos--;
+				} else {
+					confpassbuf[pos++] = (char)ch;
+				}
+			}
+			confpassbuf[pos] = '\0';
+			/* Add a newline since we're suppressing echo */
+			fprintf(stderr, "\n");
+		} else {
+			/* Use standard method for files */
+			if (fgets(confpassbuf, MAXPASSLEN, readfrom) == NULL) {
+				if (feof(readfrom))
+					warn0("EOF reading password");
+				else
+					warnp("Cannot read password");
+				goto err3;
+			}
+		}
+#else
 		if (fgets(confpassbuf, MAXPASSLEN, readfrom) == NULL) {
 			if (feof(readfrom))
 				warn0("EOF reading password");
@@ -155,6 +267,7 @@ retry:
 				warnp("Cannot read password");
 			goto err3;
 		}
+#endif
 		if (strcmp(passbuf, confpassbuf)) {
 			fprintf(stderr,
 			    "Passwords mismatch, please try again\n");
@@ -165,12 +278,18 @@ retry:
 	/* Terminate the string at the first "\r" or "\n" (if any). */
 	passbuf[strcspn(passbuf, "\r\n")] = '\0';
 
+#ifdef _MSC_VER
+	/* If we changed terminal settings, reset them. */
+	if (usingtty && hStdin != INVALID_HANDLE_VALUE)
+		SetConsoleMode(hStdin, oldMode);
+#else
 	/* If we changed terminal settings, reset them. */
 	if (usingtty)
 		tcsetattr(fileno(readfrom), TCSANOW, &term_old);
 
 	/* Restore old signals and re-issue intercepted signals. */
 	resetsigs(savedsa);
+#endif
 
 	/* Close /dev/tty if we opened it. */
 	if ((readfrom != stdin) && fclose(readfrom))
@@ -199,16 +318,24 @@ retry:
 	return (0);
 
 err3:
+#ifdef _MSC_VER
+	/* Reset terminal settings if necessary. */
+	if (usingtty && hStdin != INVALID_HANDLE_VALUE)
+		SetConsoleMode(hStdin, oldMode);
+#else
 	/* Reset terminal settings if necessary. */
 	if (usingtty)
 		tcsetattr(fileno(readfrom), TCSAFLUSH, &term_old);
+#endif
 err2:
 	/* Close /dev/tty if we opened it. */
 	if ((readfrom != stdin) && fclose(readfrom))
 		warnp("fclose");
 
+#ifndef _MSC_VER
 	/* Restore old signals and re-issue intercepted signals. */
 	resetsigs(savedsa);
+#endif
 err1:
 	/* Zero any stored passwords. */
 	insecure_memzero(passbuf, MAXPASSLEN);
