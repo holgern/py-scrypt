@@ -57,6 +57,8 @@ static int checkparams(size_t, double, double, int, uint32_t, uint32_t, int,
     int);
 #ifdef POSIXFAIL_ABSTRACT_DECLARATOR
 static int scryptdec_file_load_header(FILE * infile, uint8_t header[static 96]);
+#elif _MSC_VER
+static int scryptdec_file_load_header(FILE *, uint8_t *);
 #else
 static int scryptdec_file_load_header(FILE *, uint8_t[static 96]);
 #endif
@@ -682,8 +684,11 @@ scryptdec_file_cookie_free(struct scryptdec_file_cookie * C)
 }
 
 /* Load the header and check the magic. */
-static int
-scryptdec_file_load_header(FILE * infile, uint8_t header[static 96])
+#ifdef _MSC_VER
+static int scryptdec_file_load_header(FILE * infile, uint8_t *header)
+#else
+static int scryptdec_file_load_header(FILE * infile, uint8_t header[static 96])
+#endif
 {
 	int rc;
 
