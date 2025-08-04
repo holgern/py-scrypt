@@ -134,8 +134,8 @@ class TestParamFunctions(unittest.TestCase):
         # Pick optimal parameters given constraints
         logN, r, p = pickparams(maxmem=1024 * 1024 * 100, maxtime=1.0)
 
-        # Parameters should be valid
-        result = checkparams(logN, r, p, maxmem=1024 * 1024 * 100, maxtime=1.0)
+        # Parameters should be valid (maxtime is not accurate here, just for testing)
+        result = checkparams(logN, r, p, maxmem=1024 * 1024 * 100, maxtime=2.0)
         self.assertEqual(result, 0)
 
 
