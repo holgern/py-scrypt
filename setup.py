@@ -55,6 +55,7 @@ elif sys.platform.startswith("win32"):
         "scrypt-windows-stubs/gettimeofday.c",
         "scrypt-windows-stubs/mman.c",
     ]
+    CFLAGS.append("-DPOSIXFAIL_ABSTRACT_DECLARATOR")
     if struct.calcsize("P") == 8:
         if (
             os.path.isdir(r"c:\OpenSSL-v111-Win64")
