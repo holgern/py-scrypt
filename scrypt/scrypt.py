@@ -14,7 +14,7 @@ from ctypes import (
     pointer,
 )
 
-if sys.version_info >= (3, 8) and sys.platform == "win32":
+if sys.platform == "win32":
     lib_path = os.path.join(os.path.normpath(sys.prefix), "Library", "bin")
     build_dir = os.path.join(os.path.dirname(__file__), "../")
     if os.path.exists(lib_path):
@@ -26,7 +26,7 @@ import importlib.util
 
 _scrypt = cdll.LoadLibrary(importlib.util.find_spec("_scrypt").origin)
 
-__version__ = "0.8.29"
+__version__ = "0.9.0"
 
 _scryptenc_buf = _scrypt.exp_scryptenc_buf
 _scryptenc_buf.argtypes = [
@@ -38,7 +38,11 @@ _scryptenc_buf.argtypes = [
     c_size_t,  # size_t         maxmem
     c_double,  # double         maxmemfrac
     c_double,  # double         maxtime
+    c_int,  # int            logN
+    c_uint32,  # uint32_t       r
+    c_uint32,  # uint32_t       p
     c_int,  # int            verbose
+    c_int,  # int            force
 ]
 _scryptenc_buf.restype = c_int
 
@@ -53,6 +57,9 @@ _scryptdec_buf.argtypes = [
     c_size_t,  # size_t         maxmem
     c_double,  # double         maxmemfrac
     c_double,  # double         maxtime
+    c_int,  # int            logN
+    c_uint32,  # uint32_t       r
+    c_uint32,  # uint32_t       p
     c_int,  # int            verbose
     c_int,  # int            force
 ]
@@ -87,6 +94,8 @@ ERROR_MESSAGES = [
     "password is incorrect",
     "error writing output file",
     "error reading input file",
+    "error in explicit parameters",
+    "error in explicit parameters (both SCRYPT_ETOOBIG and SCRYPT_ETOOSLOW)",
 ]
 
 MAXMEM_DEFAULT = 0
@@ -123,14 +132,9 @@ def encrypt(
     The resulting data will have len = len(input)
     + 128.
 
-    Notes for Python 2:
-      - `input` and `password` must be str instances
-      - The result will be a str instance
-
-    Notes for Python 3:
-      - `input` and `password` can be both str and bytes. If they are str
-        instances, they will be encoded with utf-8
-      - The result will be a bytes instance
+    - `input` and `password` can be both str and bytes. If they are str
+      instances, they will be encoded with utf-8
+    - The result will be a bytes instance
 
     Exceptions raised:
       - TypeError on invalid input
@@ -155,6 +159,10 @@ def encrypt(
         maxmemfrac,
         maxtime,
         0,
+        0,
+        0,
+        0,
+        0,
     )
     if result:
         raise error(result)
@@ -172,17 +180,11 @@ def decrypt(
 ):
     """Decrypt a string using a password.
 
-    Notes for Python 2:
-      - `input` and `password` must be str instances
-      - The result will be a str instance
-      - The encoding parameter is ignored
-
-    Notes for Python 3:
-      - `input` and `password` can be both str and bytes. If they are str
-        instances, they wil be encoded with utf-8. `input` *should*
-        really be a bytes instance, since that's what `encrypt` returns.
-      - The result will be a str instance encoded with `encoding`.
-        If encoding=None, the result will be a bytes instance.
+    - `input` and `password` can be both str and bytes. If they are str
+      instances, they wil be encoded with utf-8. `input` *should*
+      really be a bytes instance, since that's what `encrypt` returns.
+    - The result will be a str instance encoded with `encoding`.
+      If encoding=None, the result will be a bytes instance.
 
     Exceptions raised:
       - TypeError on invalid input
@@ -208,6 +210,9 @@ def decrypt(
         maxmem,
         maxmemfrac,
         maxtime,
+        0,
+        0,
+        0,
         0,
         0,
     )

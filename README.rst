@@ -90,6 +90,10 @@ PyPy as well.
 
 Changelog
 =========
+0.9.0
+-----
+* Update to scrypt 1.3.3
+
 0.8.29
 ------
 * Fix build for OSX using openssl 3.0
