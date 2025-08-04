@@ -32,7 +32,11 @@ static enum {
 } hwaccel = HW_UNSET;
 #endif
 
-#ifdef POSIXFAIL_ABSTRACT_DECLARATOR
+#ifdef _MSC_VER
+static void SHA256_Transform(uint32_t state[8],
+    const uint8_t block[64], uint32_t W[64],
+    uint32_t S[8]);
+#elif POSIXFAIL_ABSTRACT_DECLARATOR
 static void SHA256_Transform(uint32_t state[static restrict 8],
     const uint8_t block[static restrict 64], uint32_t W[static restrict 64],
     uint32_t S[static restrict 8]);
@@ -105,10 +109,17 @@ static const uint32_t initial_state[8] = {
 #ifdef HWACCEL
 #if defined(CPUSUPPORT_X86_SHANI) && defined(CPUSUPPORT_X86_SSSE3)
 /* Shim so that we can test SHA256_Transform_shani() in the standard manner. */
+#ifdef _MSC_VER
+static void
+SHA256_Transform_shani_with_W_S(uint32_t state[8],
+    const uint8_t block[64], uint32_t W[64],
+    uint32_t S[8])
+#else
 static void
 SHA256_Transform_shani_with_W_S(uint32_t state[static restrict 8],
     const uint8_t block[static restrict 64], uint32_t W[static restrict 64],
     uint32_t S[static restrict 8])
+#endif
 {
 
 	(void)W; /* UNUSED */
@@ -119,10 +130,17 @@ SHA256_Transform_shani_with_W_S(uint32_t state[static restrict 8],
 #endif
 #if defined(CPUSUPPORT_ARM_SHA256)
 /* Shim so that we can test SHA256_Transform_arm() in the standard manner. */
+#ifdef _MSC_VER
+static void
+SHA256_Transform_arm_with_W_S(uint32_t state[8],
+    const uint8_t block[64], uint32_t W[64],
+    uint32_t S[8])
+#else
 static void
 SHA256_Transform_arm_with_W_S(uint32_t state[static restrict 8],
     const uint8_t block[static restrict 64], uint32_t W[static restrict 64],
     uint32_t S[static restrict 8])
+#endif
 {
 
 	(void)W; /* UNUSED */
@@ -136,6 +154,15 @@ SHA256_Transform_arm_with_W_S(uint32_t state[static restrict 8],
  * Test whether software and hardware extensions transform code produce the
  * same results.  Must be called with (hwaccel == HW_SOFTWARE).
  */
+#ifdef _MSC_VER
+static int
+hwtest(const uint32_t state[8],
+    const uint8_t block[64],
+    uint32_t W[64], uint32_t S[8],
+    void (* func)(uint32_t state[8],
+    const uint8_t block[64], uint32_t W[64],
+    uint32_t S[8]))
+#else
 static int
 hwtest(const uint32_t state[static restrict 8],
     const uint8_t block[static restrict 64],
@@ -143,6 +170,7 @@ hwtest(const uint32_t state[static restrict 8],
     void (* func)(uint32_t state[static restrict 8],
     const uint8_t block[static restrict 64], uint32_t W[static restrict 64],
     uint32_t S[static restrict 8]))
+#endif
 {
 	uint32_t state_sw[8];
 	uint32_t state_hw[8];
@@ -328,8 +356,13 @@ static const uint8_t PAD[64] = {
 };
 
 /* Add padding and terminating bit-count. */
+#ifdef _MSC_VER
+static void
+SHA256_Pad(SHA256_CTX * ctx, uint32_t tmp32[72])
+#else
 static void
 SHA256_Pad(SHA256_CTX * ctx, uint32_t tmp32[static restrict 72])
+#endif
 {
 	size_t r;
 
@@ -380,9 +413,15 @@ SHA256_Init(SHA256_CTX * ctx)
  * SHA256_Update(ctx, in, len):
  * Input ${len} bytes from ${in} into the SHA256 context ${ctx}.
  */
+#ifdef _MSC_VER
+static void
+SHA256_Update_internal(SHA256_CTX * ctx, const void * in, size_t len,
+    uint32_t tmp32[72])
+#else
 static void
 SHA256_Update_internal(SHA256_CTX * ctx, const void * in, size_t len,
     uint32_t tmp32[static restrict 72])
+#endif
 {
 	uint32_t r;
 	const uint8_t * src = in;
@@ -438,9 +477,15 @@ SHA256_Update(SHA256_CTX * ctx, const void * in, size_t len)
  * Output the SHA256 hash of the data input to the context ${ctx} into the
  * buffer ${digest}, and clear the context state.
  */
+#ifdef _MSC_VER
+static void
+SHA256_Final_internal(uint8_t digest[32], SHA256_CTX * ctx,
+    uint32_t tmp32[72])
+#else
 static void
 SHA256_Final_internal(uint8_t digest[32], SHA256_CTX * ctx,
     uint32_t tmp32[static restrict 72])
+#endif
 {
 
 	/* Add padding. */
@@ -490,10 +535,17 @@ SHA256_Buf(const void * in, size_t len, uint8_t digest[32])
  * Initialize the HMAC-SHA256 context ${ctx} with ${Klen} bytes of key from
  * ${K}.
  */
+#ifdef _MSC_VER
+static void
+HMAC_SHA256_Init_internal(HMAC_SHA256_CTX * ctx, const void * _k, size_t Klen,
+    uint32_t tmp32[72], uint8_t pad[64],
+    uint8_t khash[32])
+#else
 static void
 HMAC_SHA256_Init_internal(HMAC_SHA256_CTX * ctx, const void * _k, size_t Klen,
     uint32_t tmp32[static restrict 72], uint8_t pad[static restrict 64],
     uint8_t khash[static restrict 32])
+#endif
 {
 	const uint8_t * K = _k;
 	size_t i;
@@ -543,9 +595,15 @@ HMAC_SHA256_Init(HMAC_SHA256_CTX * ctx, const void * K, size_t Klen)
  * HMAC_SHA256_Update(ctx, in, len):
  * Input ${len} bytes from ${in} into the HMAC-SHA256 context ${ctx}.
  */
+#ifdef _MSC_VER
+static void
+HMAC_SHA256_Update_internal(HMAC_SHA256_CTX * ctx, const void * in, size_t len,
+    uint32_t tmp32[72])
+#else
 static void
 HMAC_SHA256_Update_internal(HMAC_SHA256_CTX * ctx, const void * in, size_t len,
     uint32_t tmp32[static restrict 72])
+#endif
 {
 
 	/* Feed data to the inner SHA256 operation. */
@@ -570,9 +628,15 @@ HMAC_SHA256_Update(HMAC_SHA256_CTX * ctx, const void * in, size_t len)
  * Output the HMAC-SHA256 of the data input to the context ${ctx} into the
  * buffer ${digest}, and clear the context state.
  */
+#ifdef _MSC_VER
+static void
+HMAC_SHA256_Final_internal(uint8_t digest[32], HMAC_SHA256_CTX * ctx,
+    uint32_t tmp32[72], uint8_t ihash[32])
+#else
 static void
 HMAC_SHA256_Final_internal(uint8_t digest[32], HMAC_SHA256_CTX * ctx,
     uint32_t tmp32[static restrict 72], uint8_t ihash[static restrict 32])
+#endif
 {
 
 	/* Finish the inner SHA256 operation. */
