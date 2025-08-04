@@ -14,7 +14,7 @@ from ctypes import (
     pointer,
 )
 
-if sys.platform == "win32":
+if sys.version_info >= (3, 8) and sys.platform == "win32":
     lib_path = os.path.join(os.path.normpath(sys.prefix), "Library", "bin")
     build_dir = os.path.join(os.path.dirname(__file__), "../")
     if os.path.exists(lib_path):
