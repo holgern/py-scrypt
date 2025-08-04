@@ -78,13 +78,23 @@ DL_EXPORT(int) exp_scryptdec_buf(const uint8_t *inbuf, size_t inbuflen,
 }
 
 DL_EXPORT(int) exp_crypto_scrypt(const uint8_t *passwd, size_t passwdlen,
-                                 const uint8_t *salt, size_t saltlen,
-                                 uint64_t N, uint32_t r, uint32_t p,
-                                 uint8_t *buf, size_t buflen) {
+                                  const uint8_t *salt, size_t saltlen,
+                                  uint64_t N, uint32_t r, uint32_t p,
+                                  uint8_t *buf, size_t buflen) {
     return crypto_scrypt(passwd, passwdlen, salt, saltlen,
-                         N, r, p, buf, buflen);
+                          N, r, p, buf, buflen);
 }
 
+/* Export the pickparams function to Python */
+DL_EXPORT(int) exp_pickparams(size_t maxmem, double maxmemfrac, double maxtime,
+                               int *logN, uint32_t *r, uint32_t *p, int verbose) {
+    return pickparams(maxmem, maxmemfrac, maxtime, logN, r, p, verbose);
+}
+
+DL_EXPORT(int) exp_checkparams(size_t maxmem, double maxmemfrac, double maxtime,
+                               int logN, uint32_t r, uint32_t p, int verbose, int force) {
+    return checkparams(maxmem, maxmemfrac, maxtime, logN, r, p, verbose, force);
+}
 /*
   We need a stub init_scrypt function so the module will link as a proper module.
 */

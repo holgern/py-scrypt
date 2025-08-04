@@ -51,9 +51,9 @@
 
 #define ENCBLOCK 65536
 
-static int pickparams(size_t, double, double,
+int pickparams(size_t, double, double,
     int *, uint32_t *, uint32_t *, int);
-static int checkparams(size_t, double, double, int, uint32_t, uint32_t, int,
+int checkparams(size_t, double, double, int, uint32_t, uint32_t, int,
     int);
 #if _MSC_VER
 static int scryptdec_file_load_header(FILE *, uint8_t *);
@@ -100,7 +100,7 @@ display_params(int logN, uint32_t r, uint32_t p, size_t memlimit,
 	free(human_mem_minimum);
 }
 
-static int
+int
 pickparams(size_t maxmem, double maxmemfrac, double maxtime,
     int * logN, uint32_t * r, uint32_t * p, int verbose)
 {
@@ -174,7 +174,7 @@ pickparams(size_t maxmem, double maxmemfrac, double maxtime,
 	return (SCRYPT_OK);
 }
 
-static int
+int
 checkparams(size_t maxmem, double maxmemfrac, double maxtime,
     int logN, uint32_t r, uint32_t p, int verbose, int force)
 {

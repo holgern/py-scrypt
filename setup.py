@@ -15,8 +15,6 @@ CFLAGS = []
 
 if sys.platform.startswith("linux"):
     define_macros = [
-        ("HAVE_CLOCK_GETTIME", "1"),
-        ("HAVE_LIBRT", "1"),
         ("HAVE_POSIX_MEMALIGN", "1"),
         ("HAVE_STRUCT_SYSINFO", "1"),
         ("HAVE_STRUCT_SYSINFO_MEM_UNIT", "1"),
@@ -24,10 +22,13 @@ if sys.platform.startswith("linux"):
         ("HAVE_SYSINFO", "1"),
         ("HAVE_SYS_SYSINFO_H", "1"),
         ("_FILE_OFFSET_BITS", "64"),
+        # ("DEBUG", "1"),
     ]
     libraries = ["crypto", "rt"]
     includes = ["/usr/local/include", "/usr/include"]
     CFLAGS.append("-O2")
+    CFLAGS.append("-g")
+    CFLAGS.append("-Wall")
 elif sys.platform.startswith("win32") and os.environ.get("MSYSTEM"):
     msys2_env = os.getenv("MSYSTEM")
     print(f"Building for MSYS2 {msys2_env!r} environment")

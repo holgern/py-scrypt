@@ -201,7 +201,7 @@ Changelog
 Usage
 =====
 
-Fore encryption/decryption, the library exports two functions
+For encryption/decryption, the library exports two functions
 ``encrypt`` and ``decrypt``::
 
     >>> import scrypt
@@ -232,6 +232,36 @@ functions::
         except scrypt.error:
             return False
 
+The `encrypt` function accepts several parameters to control its behavior::
+
+    encrypt(input, password, maxtime=5.0, maxmem=0, maxmemfrac=0.5, logN=0, r=0, p=0, force=False, verbose=False)
+
+Where:
+    - `input`: Data to encrypt (bytes or str)
+    - `password`: Password for encryption (bytes or str)
+    - `maxtime`: Maximum time to spend in seconds
+    - `maxmem`: Maximum memory to use in bytes (0 for unlimited)
+    - `maxmemfrac`: Maximum fraction of available memory to use (0.0 to 1.0)
+    - `logN`, `r`, `p`: Parameters controlling the scrypt key derivation function
+      - If all three are zero (default), optimal parameters are chosen automatically
+      - If provided, all three must be non-zero and will be used explicitly
+    - `force`: If True, do not check whether encryption will exceed the estimated memory or time
+    - `verbose`: If True, display parameter information
+
+The `decrypt` function has a simpler interface::
+
+    decrypt(input, password, maxtime=300.0, maxmem=0, maxmemfrac=0.5, encoding='utf-8', verbose=False, force=False)
+
+Where:
+    - `input`: Encrypted data (bytes or str)
+    - `password`: Password for decryption (bytes or str)
+    - `maxtime`: Maximum time to spend in seconds
+    - `maxmem`: Maximum memory to use in bytes (0 for unlimited)
+    - `maxmemfrac`: Maximum fraction of available memory to use
+    - `encoding`: Encoding to use for output string (None for raw bytes)
+    - `verbose`: If True, display parameter information
+    - `force`: If True, do not check whether decryption will exceed the estimated memory or time
+
 
 But, if you want output that is deterministic and constant in size,
 you can use the ``hash`` function::
@@ -245,6 +275,31 @@ you can use the ``hash`` function::
     >>> h2 = scrypt.hash('password', 'random salt')
     >>> h1 == h2 # The hash function is deterministic
     True
+
+The `hash` function accepts the following parameters::
+
+    hash(password, salt, N=1<<14, r=8, p=1, buflen=64)
+
+Where:
+    - `password`: The password to hash (bytes or str)
+    - `salt`: Salt for the hash (bytes or str)
+    - `N`: CPU/memory cost parameter (must be a power of 2)
+    - `r`: Block size parameter
+    - `p`: Parallelization parameter
+    - `buflen`: Output buffer length
+
+The parameters r, p, and buflen must satisfy r * p < 2^30 and
+buflen <= (2^32 - 1) * 32. The parameter N must be a power of 2
+greater than 1. N, r, and p must all be positive.
+
+For advanced usage, the library also provides two utility functions:
+
+- `pickparams(maxmem=0, maxmemfrac=0.5, maxtime=5.0, verbose=0)`:
+  Automatically chooses optimal scrypt parameters based on system resources.
+  Returns (logN, r, p) tuple.
+
+- `checkparams(logN, r, p, maxmem=0, maxmemfrac=0.5, maxtime=5.0, verbose=0, force=0)`:
+  Verifies that the provided parameters are valid and within resource limits.
 
 
 Acknowledgements

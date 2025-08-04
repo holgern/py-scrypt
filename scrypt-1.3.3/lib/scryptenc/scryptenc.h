@@ -178,4 +178,11 @@ int scryptdec_file_copy(struct scryptdec_file_cookie *, FILE *);
  */
 void scryptdec_file_cookie_free(struct scryptdec_file_cookie *);
 
+
+int pickparams(size_t maxmem, double maxmemfrac, double maxtime,
+    int * logN, uint32_t * r, uint32_t * p, int verbose);
+    
+int checkparams(size_t maxmem, double maxmemfrac, double maxtime,
+    int logN, uint32_t r, uint32_t p, int verbose, int force);
+
 #endif /* !SCRYPTENC_H_ */
