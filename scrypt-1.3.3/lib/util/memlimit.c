@@ -28,11 +28,51 @@
  */
 
 #ifdef _WIN32
+#include <assert.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <windows.h>
 #include "memlimit.h"
-// On Windows, just disable memory limit checks (or set a default value)
+
 int memtouse(size_t maxmem, double maxmemfrac, size_t *memlimit) {
-    *memlimit = 0;
-    return (1);
+    MEMORYSTATUSEX status;
+    uint64_t totalmem;
+    size_t memavail;
+
+    /* Check limit. */
+    assert((maxmemfrac > 0) && (maxmemfrac <= 1.0));
+
+    /* Get memory information from Windows */
+    status.dwLength = sizeof(status);
+    if (!GlobalMemoryStatusEx(&status)) {
+        /* Failed to get memory status, use a reasonable default */
+        *memlimit = 1048576; /* 1 MB minimum */
+        return (0); /* Return success to avoid crashing */
+    }
+
+    /* Get the physical memory size */
+    totalmem = (uint64_t)status.ullTotalPhys;
+
+    /* Return the value, but clamp to SIZE_MAX if necessary. */
+#if UINT64_MAX > SIZE_MAX
+    if (totalmem > SIZE_MAX)
+        totalmem = SIZE_MAX;
+#endif
+
+    /* Only use the specified fraction of the available memory. */
+    memavail = (size_t)(maxmemfrac * (double)totalmem);
+
+    /* Don't use more than the specified maximum. */
+    if ((maxmem > 0) && (memavail > maxmem))
+        memavail = maxmem;
+
+    /* But always allow at least 1 MiB. */
+    if (memavail < 1048576)
+        memavail = 1048576;
+
+    /* Return limit via the provided pointer. */
+    *memlimit = memavail;
+    return (0);
 }
 #else
 

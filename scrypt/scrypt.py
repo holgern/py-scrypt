@@ -23,8 +23,22 @@ if sys.version_info >= (3, 8) and sys.platform == "win32":
         os.add_dll_directory(build_dir)
 import importlib
 import importlib.util
+import os.path
 
-_scrypt = cdll.LoadLibrary(importlib.util.find_spec("_scrypt").origin)
+# Fix for finding the _scrypt module
+_scrypt_spec = importlib.util.find_spec("_scrypt")
+if _scrypt_spec and hasattr(_scrypt_spec, "origin"):
+    _scrypt = cdll.LoadLibrary(_scrypt_spec.origin)
+else:
+    # Fallback for Windows
+    import sys
+    import os.path
+
+    if sys.platform == "win32":
+        # Look for the DLL in common locations
+        _scrypt_dll = "_scrypt.pyd"
+        _path = os.path.abspath(os.path.dirname(__file__))
+        _scrypt = cdll.LoadLibrary(os.path.join(_path, _scrypt_dll))
 
 __version__ = "0.9.0"
 
