@@ -257,10 +257,16 @@ hwaccel_init(void)
  * the 512-bit input block to produce a new state.  The arrays W and S may be
  * filled with sensitive data, and should be sanitized by the callee.
  */
+#ifdef _MSC_VER
+static void
+SHA256_Transform(uint32_t state[8],
+    const uint8_t block[64], uint32_t W[64], uint32_t S[8])
+#else
 static void
 SHA256_Transform(uint32_t state[static restrict 8],
     const uint8_t block[static restrict 64],
     uint32_t W[static restrict 64], uint32_t S[static restrict 8])
+#endif
 {
 	int i;
 
