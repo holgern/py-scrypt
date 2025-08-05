@@ -28,6 +28,27 @@ hardware.
 Installation
 ============
 
+Or you can install the latest release from PyPi::
+
+    $ pip install scrypt
+
+Users of the Anaconda_ Python distribution can directly obtain pre-built
+Windows, Intel Linux or macOS / OSX binaries from the conda-forge channel.
+This can be done via::
+
+    $ conda install -c conda-forge scrypt
+
+
+If you want py-scrypt for your Python 3 environment, just run the
+above commands with your Python 3 interpreter. Py-scrypt supports both
+Python 2 and 3.
+
+From version 0.6.0 (not available on PyPi yet), py-scrypt supports
+PyPy as well.
+
+Build From Source
+=================
+
 For Debian and Ubuntu, please ensure that the following packages are installed:
 
 .. code:: bash
@@ -55,7 +76,13 @@ For Windows, please use the precompiled wheels. They are installed by::
     $ pip install scrypt
 
 For Windows, when the package should be compiled, the development package from https://slproweb.com/products/Win32OpenSSL.html is needed.
-It needs to be installed to C:\OpenSSL-Win64.
+It needs to be installed to `C:\OpenSSL-Win64` or `C:\Program Files\OpenSSL`. 
+
+It is also possible to use the Chocolatey package manager to install OpenSSL:
+
+```
+choco install openssl
+```
 
 You can install py-scrypt from this repository if you want the latest
 but possibly non-compiling version::
@@ -70,23 +97,6 @@ but possibly non-compiling version::
     Run tests after install:
     $ python setup.py test
 
-Or you can install the latest release from PyPi::
-
-    $ pip install scrypt
-
-Users of the Anaconda_ Python distribution can directly obtain pre-built
-Windows, Intel Linux or macOS / OSX binaries from the conda-forge channel.
-This can be done via::
-
-    $ conda install -c conda-forge scrypt
-
-
-If you want py-scrypt for your Python 3 environment, just run the
-above commands with your Python 3 interpreter. Py-scrypt supports both
-Python 2 and 3.
-
-From version 0.6.0 (not available on PyPi yet), py-scrypt supports
-PyPy as well.
 
 Changelog
 =========

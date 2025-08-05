@@ -11,7 +11,7 @@
 #define HAVE_MMAP 1
 
 /* Define to 1 if you have the <openssl/aes.h> header file. */
-#define HAVE_OPENSSL_AES_H 1
+/* #define HAVE_OPENSSL_AES_H 1 */
 
 /* Define to 1 if you have the 'posix_memalign' function. */
 /* #define HAVE_POSIX_MEMALIGN 1 */
