@@ -76,7 +76,7 @@ For Windows, please use the precompiled wheels. They are installed by::
     $ pip install scrypt
 
 For Windows, when the package should be compiled, the development package from https://slproweb.com/products/Win32OpenSSL.html is needed.
-It needs to be installed to `C:\OpenSSL-Win64` or `C:\Program Files\OpenSSL`. 
+It needs to be installed to `C:\OpenSSL-Win64` or `C:\Program Files\OpenSSL`.
 
 It is also possible to use the Chocolatey package manager to install OpenSSL:
 
@@ -100,6 +100,10 @@ but possibly non-compiling version::
 
 Changelog
 =========
+0.9.1
+-----
+* No notable change
+
 0.9.0
 -----
 * Update to scrypt 1.3.3
@@ -218,13 +222,13 @@ For encryption/decryption, the library exports two functions
     >>> data = scrypt.encrypt('a secret message', 'password', maxtime=0.1) # This will take at least 0.1 seconds
     >>> data[:20]
     'scrypt\x00\r\x00\x00\x00\x08\x00\x00\x00\x01RX9H'
-    >>> scrypt.decrypt(data, 'password', maxtime=0.1) # This will also take at least 0.1 seconds
+    >>> scrypt.decrypt(data, 'password', force=True) # This will also take at least 0.1 seconds
     'a secret message'
     >>> scrypt.decrypt(data, 'password', maxtime=0.05) # scrypt won't be able to decrypt this data fast enough
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     scrypt.error: decrypting file would take too long
-    >>> scrypt.decrypt(data, 'wrong password', maxtime=0.1) # scrypt will throw an exception if the password is incorrect
+    >>> scrypt.decrypt(data, 'wrong password', force=True) # scrypt will throw an exception if the password is incorrect
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     scrypt.error: password is incorrect
