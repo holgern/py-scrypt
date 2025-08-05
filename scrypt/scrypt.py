@@ -40,7 +40,7 @@ else:
         _path = os.path.abspath(os.path.dirname(__file__))
         _scrypt = cdll.LoadLibrary(os.path.join(_path, _scrypt_dll))
 
-__version__ = "0.9.3"
+__version__ = "0.9.4"
 
 # Declare C functions from libscrypt
 _scryptenc_buf = _scrypt.exp_scryptenc_buf
